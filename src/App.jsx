@@ -1,4 +1,8 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
+import CustomerDisplay from './pages/CustomerDisplay';
+import AdminDashboard from './pages/AdminDashboard';
+import Login from './pages/Login';
 import useStore from './store/useStore';
 import { useEffect } from 'react';
 

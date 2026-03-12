@@ -21,8 +21,8 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--color-primary-dark);
-  color: white;
+  background-color: #FDFBF7;
+  color: #0f172a;
   overflow-x: hidden;
   font-family: var(--font-sans);
 }
@@ -101,14 +101,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-primary-dark);
+  background: #FDFBF7;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-wood-dark);
+  background: #e2e8f0;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-wood-light);
+  background: #cbd5e1;
 }

@@ -97,8 +97,6 @@ export default function Login() {
         </div>
     );
 }
-    );
-}
 
 // Simple Lock icon replacement since I missed importing it initially if I use lucide
 import { Lock } from 'lucide-react';
