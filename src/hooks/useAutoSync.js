@@ -2,61 +2,86 @@ import { useEffect, useRef } from 'react';
 import { Peer } from 'peerjs';
 import useStore from '../store/useStore';
 
-const TV_ID = 'ekranyonetimi-tv-demo-core-v2'; // Sabit ve benzersiz TV ID'si
+const TV_BASE_ID = 'doner-akis-tv-v4';
+const MAX_CHANNELS = 5; // allow up to 5 concurrent TV screens
 
 export function useAutoSyncDisplay() {
     const syncState = useStore(state => state.syncState);
 
+    // 1. Same-Device Fallback (LocalStorage event)
+    useEffect(() => {
+        const handleStorage = (e) => {
+            if (e.key === 'doner-signage-storage' && e.newValue) {
+                try {
+                    const parsed = JSON.parse(e.newValue);
+                    if (parsed && parsed.state) {
+                        syncState(parsed.state);
+                    }
+                } catch(err) {
+                    console.error('Storage sync parse error', err);
+                }
+            }
+        };
+        window.addEventListener('storage', handleStorage);
+        return () => window.removeEventListener('storage', handleStorage);
+    }, [syncState]);
+
+    // 2. PeerJS Network Sync (Cross-Device)
     useEffect(() => {
         if (!syncState) return;
 
         let peer = null;
+        let channelIndex = 1;
         let reconnectTimeout = null;
 
-        const initPeer = () => {
-            peer = new Peer(TV_ID, {
-                debug: 0,
-            });
+        const connectToChannel = (index) => {
+            if (peer) {
+                peer.destroy();
+                peer = null;
+            }
+
+            const currentId = `${TV_BASE_ID}-${index}`;
+            console.log(`[Sync] TV Ekranı kanal atanıyor: ${currentId}`);
+            
+            peer = new Peer(currentId, { debug: 0 });
 
             peer.on('open', (id) => {
-                console.log('Ekran senkronizasyona hazır. ID:', id);
+                console.log(`[Sync] TV Hazır. Canlı ağ bağlantısı açıldı: (${id})`);
             });
 
             peer.on('connection', (conn) => {
                 conn.on('data', (data) => {
                     if (data && data.type === 'SYNC_STATE' && data.payload) {
+                        console.log(`[Sync] Telefondan canlı veri alındı.`);
                         syncState(data.payload);
                     }
                 });
             });
 
-            peer.on('disconnected', () => {
-                console.log('PeerJS bağlantısı koptu. Yeniden bağlanılıyor...');
-                if (!peer.destroyed) {
-                    peer.reconnect();
+            peer.on('error', (err) => {
+                if (err.type === 'unavailable-id') {
+                    console.log(`[Sync] ${currentId} meşgul, sonraki kanala geçiliyor...`);
+                    channelIndex = (channelIndex % MAX_CHANNELS) + 1;
+                    reconnectTimeout = setTimeout(() => connectToChannel(channelIndex), 1000);
+                } else {
+                    console.error('[Sync] PeerJS Hatası:', err.type);
+                    reconnectTimeout = setTimeout(() => connectToChannel(channelIndex), 3000);
                 }
             });
 
-            peer.on('error', (err) => {
-                console.error('Ekran Sync Hatası:', err.type);
-                if (err.type === 'unavailable-id') {
-                    // ID zaten alınmış, muhtemelen açık başka bir ekran sekmesi var
-                    reconnectTimeout = setTimeout(initPeer, 5000);
-                } else if (err.type === 'network' || err.type === 'server-error' || err.type === 'peer-unavailable') {
-                    reconnectTimeout = setTimeout(initPeer, 3000);
+            peer.on('disconnected', () => {
+                console.log('[Sync] Ağ bağlantısı koptu, yeniden deneniyor...');
+                if (!peer.destroyed) {
+                    setTimeout(() => peer.reconnect(), 2000);
                 }
             });
         };
 
-        initPeer();
+        connectToChannel(channelIndex);
 
         return () => {
-            if (peer) {
-                peer.destroy();
-            }
-            if (reconnectTimeout) {
-                clearTimeout(reconnectTimeout);
-            }
+            if (peer) peer.destroy();
+            if (reconnectTimeout) clearTimeout(reconnectTimeout);
         };
     }, [syncState]);
 }
@@ -69,67 +94,81 @@ export function useAutoSyncAdmin() {
     const settings = useStore(state => state.settings);
     
     const peerRef = useRef(null);
-    const connRef = useRef(null);
+    const connsRef = useRef({}); 
     const lastStateStr = useRef('');
     const retryInterval = useRef(null);
 
-    // Initial Connection
+    const getPayload = () => ({
+        categories: useStore.getState().categories,
+        products: useStore.getState().products,
+        campaigns: useStore.getState().campaigns,
+        showcaseImages: useStore.getState().showcaseImages,
+        settings: useStore.getState().settings
+    });
+
     useEffect(() => {
-        let peer = new Peer({ debug: 0 });
+        const peer = new Peer({ debug: 0 });
         peerRef.current = peer;
 
-        const connectToTV = () => {
+        const broadcastToAllChannels = () => {
             if (!peer || peer.disconnected || peer.destroyed) return;
-            if (connRef.current && connRef.current.open) return;
 
-            const conn = peer.connect(TV_ID, { reliable: true });
-            
-            conn.on('open', () => {
-                console.log('TV ekranına başarıyla bağlanıldı! Canlı güncellemeler aktif.');
-                connRef.current = conn;
+            for (let i = 1; i <= MAX_CHANNELS; i++) {
+                const targetId = `${TV_BASE_ID}-${i}`;
                 
-                // Send current state on first connection
-                const payload = { 
-                    categories: useStore.getState().categories, 
-                    products: useStore.getState().products, 
-                    campaigns: useStore.getState().campaigns, 
-                    showcaseImages: useStore.getState().showcaseImages, 
-                    settings: useStore.getState().settings 
-                };
-                conn.send({ type: 'SYNC_STATE', payload });
-                lastStateStr.current = JSON.stringify(payload);
-            });
+                if (connsRef.current[targetId] && connsRef.current[targetId].open) {
+                    continue; // Already connected
+                }
 
-            conn.on('close', () => {
-                connRef.current = null;
-            });
-            
-            conn.on('error', () => {
-                connRef.current = null;
-            });
+                const conn = peer.connect(targetId, { reliable: true });
+                
+                conn.on('open', () => {
+                    console.log(`[Sync] TV Kanalına Bağlandı: ${targetId}`);
+                    connsRef.current[targetId] = conn;
+                    
+                    // Immediately push current state
+                    conn.send({ type: 'SYNC_STATE', payload: getPayload() });
+                });
+
+                conn.on('close', () => {
+                    delete connsRef.current[targetId];
+                });
+
+                conn.on('error', () => {
+                    delete connsRef.current[targetId];
+                });
+            }
         };
 
         peer.on('open', () => {
-            connectToTV();
-            retryInterval.current = setInterval(connectToTV, 3000);
+            broadcastToAllChannels();
+            // Continuously scan for new TVs
+            retryInterval.current = setInterval(broadcastToAllChannels, 3000);
         });
 
         return () => {
             if (retryInterval.current) clearInterval(retryInterval.current);
+            Object.values(connsRef.current).forEach(c => c.close());
             if (peer) peer.destroy();
         };
     }, []);
 
-    // Broadcast on State Changes
+    // Push new state to all connected TVs when changes occur
     useEffect(() => {
-        if (!connRef.current || !connRef.current.open) return;
-        
         const payload = { categories, products, campaigns, showcaseImages, settings };
         const stateStr = JSON.stringify(payload);
         
         if (stateStr !== lastStateStr.current) {
-            connRef.current.send({ type: 'SYNC_STATE', payload });
             lastStateStr.current = stateStr;
+            let activeConns = 0;
+            
+            Object.values(connsRef.current).forEach(conn => {
+                if (conn && conn.open) {
+                    conn.send({ type: 'SYNC_STATE', payload });
+                    activeConns++;
+                }
+            });
+            console.log(`[Sync] Değişiklik ${activeConns} TV ekranına gönderildi.`);
         }
     }, [categories, products, campaigns, showcaseImages, settings]);
 }
