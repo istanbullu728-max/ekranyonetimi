@@ -151,7 +151,8 @@ export default function TVPreviewModal() {
                                 {idx === 0 ? 'Taze ve Sıcak' : idx === 1 ? 'Özel Soslu' : 'Geleneksel Lezzet'}
                             </h3>
                         </div>
-                    </div>
+                ))}
+                
                 {/* Carousel Indicators */}
                 <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
                     {showcaseImages.map((_, idx) => (
