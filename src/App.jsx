@@ -52,14 +52,22 @@ function App() {
             console.error('Channel error:', e);
         }
 
-        const unsubscribe = useStore.subscribe((state, prevState) => {
+        // Local variable to track last broadcasted state to prevent loops
+        let lastBroadcastSnapshot = JSON.stringify({
+            p: useStore.getState().products,
+            c: useStore.getState().campaigns
+        });
+
+        const unsubscribe = useStore.subscribe((state) => {
             if (!bc) return;
             try {
-                // Only sync if actual data changed (categories, products, etc)
-                const s1 = JSON.stringify({ p: state.products, c: state.campaigns });
-                const s2 = JSON.stringify({ p: prevState.products, c: prevState.campaigns });
+                // Manually check if products or campaigns changed
+                const currentData = { p: state.products, c: state.campaigns };
+                const currentSnapshot = JSON.stringify(currentData);
                 
-                if (s1 !== s2) {
+                if (currentSnapshot !== lastBroadcastSnapshot) {
+                    lastBroadcastSnapshot = currentSnapshot; // Update tracker
+                    
                     bc.postMessage({ 
                         type: 'SYNC_STATE', 
                         payload: {
@@ -71,7 +79,9 @@ function App() {
                         } 
                     });
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error("Broadcast failure:", e);
+            }
         });
 
         return () => {
