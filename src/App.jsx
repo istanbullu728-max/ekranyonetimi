@@ -1,7 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import CustomerDisplay from './pages/CustomerDisplay';
-import AdminDashboard from './pages/AdminDashboard';
-import Login from './pages/Login';
+import LandingPage from './pages/LandingPage';
 import useStore from './store/useStore';
 import { useEffect } from 'react';
 
@@ -27,8 +24,6 @@ function App() {
 
     // Subscribing to zustand changes to broadcast them
     const unsubscribe = useStore.subscribe((state, prevState) => {
-      // Very basic diff check to prevent infinite loops:
-      // In a real app we'd want more granular syncing, but the whole state is relatively small.
       if (JSON.stringify(state) !== JSON.stringify(prevState)) {
         bc.postMessage({ type: 'SYNC_STATE', payload: state });
       }
@@ -43,7 +38,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<CustomerDisplay />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/display" element={<CustomerDisplay />} />
         <Route path="/login" element={<Login />} />
         <Route 
           path="/admin" 

@@ -80,16 +80,16 @@ export default function CustomerDisplay() {
     const currentPageItems = paginatedMenu[currentMenuPage] || [];
 
     return (
-        <div className="relative w-screen h-screen overflow-hidden bg-[#121212] text-white font-sans flex select-none">
+        <div className="relative w-screen h-screen overflow-hidden bg-[#FDFBF7] text-slate-900 font-sans flex select-none">
             
             {/* Left Section (70%) - Paginated Menu */}
-            <div className="w-[70%] h-full flex flex-col relative border-r border-white/5">
+            <div className="w-[70%] h-full flex flex-col relative border-r border-slate-200/50">
                 
                 {/* Header */}
                 <div className="p-12 pb-6 flex justify-between items-center">
                     <div>
-                        <h1 className="text-6xl font-black tracking-tighter text-white/90">GÜNÜN MENÜSÜ</h1>
-                        <div className="h-1.5 w-24 bg-amber-500 mt-2 rounded-full"></div>
+                        <h1 className="text-6xl font-black tracking-tighter text-slate-900">GÜNÜN MENÜSÜ</h1>
+                        <div className="h-1.5 w-24 bg-amber-500 mt-2 rounded-full shadow-sm"></div>
                     </div>
                     {activeCampaign && (
                         <div className="bg-amber-500 text-black px-8 py-3 rounded-full font-black text-lg uppercase tracking-wider animate-pulse transition-all">
@@ -118,34 +118,34 @@ export default function CustomerDisplay() {
                                 <div key={product.id} className="flex flex-col gap-1">
                                     <div className="flex items-end gap-4 group">
                                         <div className="flex items-center gap-3">
-                                            <span className="text-3xl font-bold tracking-tight text-white/90 uppercase">
+                                            <span className="text-3xl font-black tracking-tight text-slate-800 uppercase">
                                                 {product.name}
                                             </span>
                                             {product.isHot && <Flame size={20} className="text-red-500 fill-red-500" />}
-                                            {product.isChefPick && <Sparkles size={20} className="text-amber-500 fill-amber-500" />}
+                                            {product.isChefPick && <Sparkles size={20} className="text-amber-500 fill-amber-500 shadow-sm" />}
                                         </div>
                                         
                                         {/* Dynamic Dots */}
-                                        <div className="flex-1 border-b-2 border-dotted border-white/10 mb-2 min-w-[20px]"></div>
+                                        <div className="flex-1 border-b-2 border-dotted border-slate-200 mb-2 min-w-[20px]"></div>
                                         
                                         <div className="flex items-center gap-3">
                                             {hasDiscount && (
-                                                <span className="text-xl text-white/20 line-through font-medium">
+                                                <span className="text-xl text-slate-300 line-through font-bold">
                                                     {product.price.toFixed(0)}₺
                                                 </span>
                                             )}
-                                            <span className={`text-4xl font-black ${hasDiscount ? 'text-amber-500' : 'text-white'}`}>
+                                            <span className={`text-5xl font-black ${hasDiscount ? 'text-amber-500' : 'text-slate-900'}`}>
                                                 {displayPrice.toFixed(0)}
-                                                <span className="text-xl ml-1 opacity-50 font-bold">₺</span>
+                                                <span className="text-xl ml-1 text-slate-400 font-bold">₺</span>
                                             </span>
                                         </div>
                                     </div>
                                     <div className="flex justify-between items-center pr-2">
-                                        <span className="text-sm text-white/30 italic font-medium">
+                                        <span className="text-sm text-slate-400 italic font-bold">
                                             {product.description || 'Hatay mutfağının seçkin lezzeti, taze malzemelerle.'}
                                         </span>
                                         {category && (
-                                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/10 border border-white/5 px-2 py-0.5 rounded">
+                                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300 border border-slate-100 px-2 py-0.5 rounded-lg bg-slate-50">
                                                 {category.name}
                                             </span>
                                         )}
@@ -157,15 +157,15 @@ export default function CustomerDisplay() {
                 </div>
 
                 {/* Progress Bar & Page Indicator */}
-                <div className="h-2 w-full bg-white/5 relative">
+                <div className="h-2 w-full bg-slate-100 relative shadow-inner">
                     <div 
-                        className="h-full bg-amber-500 transition-all duration-75 ease-linear shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+                        className="h-full bg-amber-500 transition-all duration-75 ease-linear shadow-[0_0_15px_rgba(245,158,11,0.2)]"
                         style={{ width: `${progress}%` }}
                     ></div>
                     
                     {/* Page Numbers */}
                     {paginatedMenu.length > 1 && (
-                        <div className="absolute -top-10 right-12 flex gap-4 text-white/20 font-black tracking-widest text-sm uppercase">
+                        <div className="absolute -top-10 right-12 flex gap-4 text-slate-200 font-black tracking-widest text-sm uppercase">
                             {paginatedMenu.map((_, idx) => (
                                 <span key={idx} className={idx === currentMenuPage ? 'text-amber-500' : ''}>
                                     {String(idx + 1).padStart(2, '0')}
@@ -176,8 +176,8 @@ export default function CustomerDisplay() {
                 </div>
             </div>
 
-            {/* Right Section (30%) - Showcase Carousel (Static/Unchanged logic but themed) */}
-            <div className="w-[30%] h-full relative bg-[#0a0a0a]">
+            {/* Right Section (30%) - Showcase Carousel */}
+            <div className="w-[30%] h-full relative bg-slate-50">
                 {showcaseImages.map((img, idx) => (
                     <div
                         key={img.id}
@@ -190,35 +190,35 @@ export default function CustomerDisplay() {
                         ) : (
                             <div className="w-full h-full bg-[#111] flex flex-col items-center justify-center text-white/5 p-20 text-center">
                                 <Sparkles size={80} className="mb-8" />
-                                <span className="text-xl font-bold uppercase tracking-[0.4em]">HAZIRLANIYOR</span>
+                                <span className="text-xl font-black uppercase tracking-[0.4em] text-slate-200">HAZIRLANIYOR</span>
                             </div>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/40"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/10"></div>
                         
                         <div className="absolute bottom-20 left-0 right-0 p-12 text-center animate-in slide-in-from-bottom-8 duration-1000">
-                            <h3 className="text-4xl font-black text-white italic tracking-tighter drop-shadow-2xl leading-tight">
+                            <h3 className="text-4xl font-black text-slate-800 italic tracking-tighter drop-shadow-sm leading-tight uppercase">
                                 {idx === 0 ? 'Taze ve Sıcak' : idx === 1 ? 'Özel Soslu' : 'Geleneksel Lezzet'}
                             </h3>
-                            <div className="w-12 h-1 bg-amber-500 mx-auto mt-6 rounded-full"></div>
+                            <div className="w-12 h-1 bg-amber-500 mx-auto mt-6 rounded-full shadow-sm"></div>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* Admin/Settings Hidden Controls */}
-            <div className="absolute bottom-6 right-6 z-50 opacity-0 hover:opacity-100 transition-opacity">
+            {/* Admin/Settings Controls - NOW ALWAYS VISIBLE FOR USER */}
+            <div className="absolute bottom-6 right-6 z-50 flex gap-2">
                 <button
                     onClick={() => navigate('/admin')}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/10 text-white/40 hover:text-amber-500 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all text-[10px] uppercase tracking-wider font-black"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200 text-slate-400 hover:text-amber-600 hover:border-amber-500/30 hover:shadow-lg transition-all text-[10px] uppercase tracking-widest font-black shadow-sm"
                 >
-                    <Settings size={14} />
-                    <span>Admin</span>
+                    <Settings size={16} />
+                    <span>Yönetim Paneli</span>
                 </button>
                 <button
                     onClick={toggleFullScreen}
-                    className="ml-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/10 text-white/40 hover:text-white transition-all text-[10px] uppercase tracking-wider font-black"
+                    className="px-4 py-2 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200 text-slate-400 hover:text-slate-900 hover:shadow-lg transition-all text-[10px] uppercase tracking-widest font-black shadow-sm"
                 >
-                    <Maximize2 size={14} />
+                    <Maximize2 size={16} />
                 </button>
             </div>
         </div>

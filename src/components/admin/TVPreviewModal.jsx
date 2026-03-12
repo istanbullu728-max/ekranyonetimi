@@ -66,17 +66,17 @@ export default function TVPreviewModal() {
     const currentPageItems = paginatedMenu[currentMenuPage] || [];
 
     return (
-        <div className="w-full h-full bg-[#121212] flex overflow-hidden rounded-2xl shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/5 font-sans relative">
+        <div className="w-full h-full bg-[#FDFBF7] flex overflow-hidden rounded-2xl shadow-xl border border-slate-200 font-sans relative">
             
             {/* Left Section (70%) */}
-            <div className="w-[70%] h-full flex flex-col relative border-r border-white/5">
+            <div className="w-[70%] h-full flex flex-col relative border-r border-slate-200/50">
                 
                 {/* Header */}
-                <div className="p-10 pb-4 border-b border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent">
+                <div className="p-10 pb-4 border-b border-slate-100 bg-gradient-to-b from-slate-50 to-transparent">
                     <div className="flex justify-between items-end">
                         <div>
-                            <h2 className="text-4xl font-black text-white/90 tracking-tighter">MENÜ PLAZMA</h2>
-                            <div className="h-1 w-16 bg-amber-500 mt-2 rounded-full"></div>
+                            <h2 className="text-4xl font-black text-slate-800 tracking-tighter">MENÜ PLAZMA</h2>
+                            <div className="h-1 w-16 bg-amber-500 mt-2 rounded-full shadow-sm"></div>
                         </div>
                         {activeCampaign && (
                             <div className="bg-amber-500 text-black px-6 py-2 rounded-full font-bold text-sm uppercase tracking-widest animate-pulse">
@@ -98,20 +98,20 @@ export default function TVPreviewModal() {
                                 <div key={product.id} className="flex flex-col gap-0.5">
                                     <div className="flex items-end gap-3">
                                         <div className="flex items-center gap-2">
-                                            <span className="text-xl font-bold text-white/90 uppercase truncate max-w-[300px]">{product.name}</span>
+                                            <span className="text-xl font-black text-slate-800 uppercase truncate max-w-[300px]">{product.name}</span>
                                             {product.isHot && <Flame size={14} className="text-red-500 fill-red-500" />}
-                                            {product.isChefPick && <Sparkles size={14} className="text-amber-500 fill-amber-500" />}
+                                            {product.isChefPick && <Sparkles size={14} className="text-amber-500 fill-amber-500 shadow-sm" />}
                                         </div>
-                                        <div className="flex-1 border-b border-dotted border-white/10 mb-1.5 min-w-[10px]"></div>
+                                        <div className="flex-1 border-b border-dotted border-slate-200 mb-1.5 min-w-[10px]"></div>
                                         <div className="flex items-center gap-2">
-                                            {hasDiscount && <span className="text-xs text-white/20 line-through font-medium">{product.price.toFixed(0)}₺</span>}
-                                            <span className={`text-2xl font-black ${hasDiscount ? 'text-amber-500' : 'text-white'}`}>
+                                            {hasDiscount && <span className="text-xs text-slate-300 line-through font-bold">{product.price.toFixed(0)}₺</span>}
+                                            <span className={`text-2xl font-black ${hasDiscount ? 'text-amber-500' : 'text-slate-900'}`}>
                                                 {displayPrice.toFixed(0)}
-                                                <span className="text-sm ml-0.5 opacity-40 font-bold">₺</span>
+                                                <span className="text-sm ml-0.5 text-slate-400 font-bold">₺</span>
                                             </span>
                                         </div>
                                     </div>
-                                    <p className="text-[10px] text-white/30 italic font-medium leading-tight">
+                                    <p className="text-[10px] text-slate-400 italic font-bold leading-tight">
                                         {product.description || 'Hatay mutfağından benzersiz bir lezzet deneyimi.'}
                                     </p>
                                 </div>
@@ -121,16 +121,16 @@ export default function TVPreviewModal() {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-1 w-full bg-white/5 relative">
+                <div className="h-1 w-full bg-slate-100 relative shadow-inner">
                     <div 
-                        className="h-full bg-amber-500 transition-all duration-75 ease-linear"
+                        className="h-full bg-amber-500 transition-all duration-75 ease-linear shadow-[0_0_10px_rgba(245,158,11,0.2)]"
                         style={{ width: `${progress}%` }}
                     ></div>
                 </div>
             </div>
 
             {/* Right Section (30%) */}
-            <div className="w-[30%] h-full relative bg-[#0a0a0a]">
+            <div className="w-[30%] h-full relative bg-slate-50">
                 {showcaseImages.map((img, idx) => (
                     <div
                         key={img.id}
@@ -139,15 +139,15 @@ export default function TVPreviewModal() {
                         }`}
                     >
                         {img.url ? (
-                            <img src={img.url} alt="Showcase" className="w-full h-full object-cover opacity-60" />
+                            <img src={img.url} alt="Showcase" className="w-full h-full object-cover opacity-80" />
                         ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-white/5 opacity-50">
+                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-200">
                                 <Sparkles size={40} />
                             </div>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/10"></div>
                         <div className="absolute bottom-8 left-0 right-0 p-6 text-center">
-                            <h3 className="text-xl font-black text-white italic tracking-tighter drop-shadow-lg">
+                            <h3 className="text-xl font-black text-slate-800 italic tracking-tighter drop-shadow-sm uppercase">
                                 {idx === 0 ? 'Taze ve Sıcak' : idx === 1 ? 'Özel Soslu' : 'Geleneksel Lezzet'}
                             </h3>
                         </div>
@@ -159,7 +159,7 @@ export default function TVPreviewModal() {
                     {showcaseImages.map((_, idx) => (
                         <div 
                             key={idx} 
-                            className={`h-1 rounded-full transition-all duration-500 ${idx === currentSlide ? 'w-8 bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'w-2 bg-white/20'}`}
+                            className={`h-1 rounded-full transition-all duration-500 ${idx === currentSlide ? 'w-8 bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.3)]' : 'w-2 bg-slate-200'}`}
                         ></div>
                     ))}
                 </div>
