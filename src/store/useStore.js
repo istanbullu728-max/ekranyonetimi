@@ -47,6 +47,9 @@ const useStore = create(
                 )
             })),
 
+            hasHydrated: false,
+            setHasHydrated: (val) => set({ hasHydrated: val }),
+
             // Synchronize state across tabs (Customer Display <-> Admin)
             syncState: (data) => {
                 if (!data) return;
@@ -62,6 +65,9 @@ const useStore = create(
         }),
         {
             name: 'doner-signage-storage',
+            onRehydrateStorage: () => (state) => {
+                state.setHasHydrated(true);
+            }
         }
     )
 );

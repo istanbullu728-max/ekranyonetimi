@@ -1,119 +1,109 @@
+import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import CustomerDisplay from './pages/CustomerDisplay';
-import AdminDashboard from './pages/AdminDashboard';
-import Login from './pages/Login';
 import useStore from './store/useStore';
-import { useEffect, Component } from 'react';
 
-// Error Boundary for better debugging and safety
-class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-  static getDerivedStateFromError(error) { return { hasError: true, error }; }
-  componentDidCatch(error, errorInfo) { console.error("App Crash:", error, errorInfo); }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen bg-[#FDFBF7] flex flex-col items-center justify-center p-8 text-center">
-            <h1 className="text-4xl font-black text-slate-900 mb-4 uppercase italic">Sistem Hatası</h1>
-            <p className="text-slate-500 mb-8 max-w-md">Uygulama yüklenirken bir sorun oluştu. Lütfen verilerinizi kontrol edin veya sayfayı yenileyin.</p>
-            <button onClick={() => { localStorage.clear(); window.location.reload(); }} className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs">Ayarları Sıfırla ve Yeniden Başlat</button>
-            {this.state.error && <pre className="mt-8 p-4 bg-red-50 text-red-500 text-[10px] rounded-xl text-left overflow-auto max-w-full">{this.state.error.toString()}</pre>}
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+// Lazy load pages to prevent a single page crash from killing the whole app
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const CustomerDisplay = lazy(() => import('./pages/CustomerDisplay'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const Login = lazy(() => import('./pages/Login'));
 
-// Simple Protected Route Component
+// Basic Loading Screen
+const Fallback = () => (
+    <div className="min-h-screen bg-[#FDFBF7] flex flex-col items-center justify-center p-8 text-center animate-in fade-in duration-500">
+        <div className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mb-6 shadow-xl shadow-amber-500/10"></div>
+        <h1 className="text-xl font-black uppercase tracking-[0.3em] text-slate-800">Menü Yükleniyor</h1>
+        <p className="text-xs text-slate-400 mt-2 font-bold uppercase tracking-widest">Lütfen bekleyin...</p>
+    </div>
+);
+
+// Protected Route
 const PrivateRoute = ({ children }) => {
-  const isAuthenticated = localStorage.getItem('isAdminAuthenticated') === 'true';
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+    const isAuthenticated = localStorage.getItem('isAdminAuthenticated') === 'true';
+    return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 function App() {
-  const syncState = useStore((state) => state.syncState);
+    const syncState = useStore((state) => state.syncState);
+    const hasHydrated = useStore((state) => state.hasHydrated);
 
-  useEffect(() => {
-    // Isolated safety block for BroadcastChannel
-    let bcInstance = null;
-    try {
-      if (typeof window !== 'undefined' && window.BroadcastChannel) {
-        bcInstance = new BroadcastChannel('doner_signage_channel');
-      }
-    } catch (e) {
-      console.warn("BroadcastChannel initialization failed", e);
-    }
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
 
-    if (bcInstance) {
-      // Listen for messages from other tabs (Admin panel updating Customer display)
-      bcInstance.onmessage = (event) => {
-        if (event.data && event.data.type === 'SYNC_STATE') {
-          console.log("Received SYNC_STATE broadcast:", event.data.payload);
-          syncState(event.data.payload);
+        // EMERGENCY RESET: If the user adds ?reset=true to the URL, clear everything
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('reset') === 'true') {
+            localStorage.clear();
+            window.location.href = window.location.origin;
+            return;
         }
-      };
-    }
 
-    // Subscribing to zustand changes to broadcast them (Sync ONLY data)
-    const unsubscribe = useStore.subscribe((state, prevState) => {
-      if (!bcInstance) return;
-      
-      try {
-        // Only broadcast if actual meaningful data changed
-        const hasProductsChanged = JSON.stringify(state.products) !== JSON.stringify(prevState.products);
-        const hasCampaignsChanged = JSON.stringify(state.campaigns) !== JSON.stringify(prevState.campaigns);
-        
-        if (hasProductsChanged || hasCampaignsChanged) {
-          const snapshot = {
-            categories: state.categories,
-            products: state.products,
-            campaigns: state.campaigns,
-            showcaseImages: state.showcaseImages,
-            settings: state.settings
-          };
-          console.log("Broadcasting SYNC_STATE due to changes:", { hasProductsChanged, hasCampaignsChanged });
-          bcInstance.postMessage({ 
-            type: 'SYNC_STATE', 
-            payload: snapshot
-          });
+        let bc = null;
+        try {
+            if (window.BroadcastChannel) {
+                bc = new BroadcastChannel('doner_signage_channel');
+                bc.onmessage = (event) => {
+                    if (event.data?.type === 'SYNC_STATE') {
+                        syncState(event.data.payload);
+                    }
+                };
+            }
+        } catch (e) {
+            console.error('Channel error:', e);
         }
-      } catch (e) {
-        console.error("Broadcast failed", e); // Silent fail for broadcast, don't crash the whole app
-      }
-    });
 
-    return () => {
-      if (bcInstance) {
-        try { bcInstance.close(); } catch (e) { console.error("Error closing BroadcastChannel:", e); }
-      }
-      unsubscribe();
-    };
-  }, [syncState]);
+        const unsubscribe = useStore.subscribe((state, prevState) => {
+            if (!bc) return;
+            try {
+                // Only sync if actual data changed (categories, products, etc)
+                const s1 = JSON.stringify({ p: state.products, c: state.campaigns });
+                const s2 = JSON.stringify({ p: prevState.products, c: prevState.campaigns });
+                
+                if (s1 !== s2) {
+                    bc.postMessage({ 
+                        type: 'SYNC_STATE', 
+                        payload: {
+                            categories: state.categories,
+                            products: state.products,
+                            campaigns: state.campaigns,
+                            showcaseImages: state.showcaseImages,
+                            settings: state.settings
+                        } 
+                    });
+                }
+            } catch (e) {}
+        });
 
-  return (
-    <ErrorBoundary>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/display" element={<CustomerDisplay />} />
-          <Route path="/login" element={<Login />} />
-          <Route 
-            path="/admin" 
-            element={
-              <PrivateRoute>
-                <AdminDashboard />
-              </PrivateRoute>
-            } 
-          />
-        </Routes>
-      </BrowserRouter>
-    </ErrorBoundary>
-  );
+        return () => {
+            if (bc) bc.close();
+            unsubscribe();
+        };
+    }, [syncState]);
+
+    // Force wait for rehydration to prevent state flashes or empty starts
+    if (!hasHydrated) return <Fallback />;
+
+    return (
+        <Suspense fallback={<Fallback />}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/display" element={<CustomerDisplay />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route 
+                        path="/admin" 
+                        element={
+                            <PrivateRoute>
+                                <AdminDashboard />
+                            </PrivateRoute>
+                        } 
+                    />
+                    {/* Fallback for unknown routes */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </BrowserRouter>
+        </Suspense>
+    );
 }
 
 export default App;
