@@ -3,7 +3,7 @@ import useStore from '../../store/useStore';
 import { Pencil, Trash2, PowerOff, Power, Check, X, Tag, Plus } from 'lucide-react';
 
 export default function ProductList({ onAddProductToCategory }) {
-    const { products, categories, updateProduct, deleteProduct } = useStore();
+    const { products, categories, updateProduct, deleteProduct, settings, setIsTextCurved } = useStore();
     const [editingPriceId, setEditingPriceId] = useState(null);
     const [tempPrice, setTempPrice] = useState('');
 
@@ -32,6 +32,29 @@ export default function ProductList({ onAddProductToCategory }) {
 
     return (
         <div className="flex flex-col gap-12 pb-20 pt-4">
+            {/* Global Settings Toggle */}
+            <div className="flex items-center justify-between bg-white p-6 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group">
+                <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-500 rounded-l-3xl"></div>
+                <div className="flex gap-4 items-center text-slate-700">
+                    <div className="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-500 border border-amber-100 group-hover:scale-105 transition-transform">
+                        <Tag size={24} />
+                    </div>
+                    <div>
+                         <h4 className="font-bold text-lg text-slate-800">Yazıyı Kavisli Yap (TV Görünümü)</h4>
+                         <p className="text-sm text-slate-400">Görsellerin etrafından metinlerin kavisli akmasını sağlar.</p>
+                    </div>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                    <input 
+                        type="checkbox" 
+                        className="sr-only peer" 
+                        checked={settings?.isTextCurved || false}
+                        onChange={(e) => setIsTextCurved(e.target.checked)} 
+                    />
+                    <div className="w-14 h-8 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-amber-500"></div>
+                </label>
+            </div>
+
             {categories.map((category) => {
                 const catProducts = products.filter(p => p.categoryId === category.id);
                 // Even if length is 0, we still want to show the category block now so we can add to it.

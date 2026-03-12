@@ -11,7 +11,11 @@ const useStore = create(
             settings: {
                 theme: 'dark-wood',
                 activeCampaignId: null, // Computed active campaign
+                isTextCurved: false,
             },
+            setIsTextCurved: (val) => set((state) => ({
+                settings: { ...state.settings, isTextCurved: val }
+            })),
             tvPairCode: null,
             adminPairCode: null,
             setTvPairCode: (code) => set({ tvPairCode: code }),

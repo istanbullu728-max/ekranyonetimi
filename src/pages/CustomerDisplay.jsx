@@ -12,6 +12,7 @@ export default function CustomerDisplay() {
     const categories = useStore((state) => state.categories || []);
     const campaigns = useStore((state) => state.campaigns || []);
     const showcaseImages = useStore((state) => state.showcaseImages || []);
+    const settings = useStore((state) => state.settings || {});
     
     const [currentMenuPage, setCurrentMenuPage] = useState(0);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -111,10 +112,20 @@ export default function CustomerDisplay() {
 
                 {/* Animated Product List */}
                 <div className="flex-1 px-12 py-4 relative">
+                    {/* Floating Curve Element for Text Wrap */}
+                    {settings?.isTextCurved && (
+                        <div 
+                            className="float-right h-[120%] w-[350px] -mr-12 -mt-12 pointer-events-none"
+                            style={{ 
+                                shapeOutside: 'ellipse(100% 50% at 100% 50%)'
+                            }}
+                        />
+                    )}
+
                     {currentPageItems.length > 0 ? (
                         <div 
                             key={currentMenuPage} 
-                            className="flex flex-col gap-6 animate-in fade-in duration-1000 slide-in-from-bottom-4"
+                            className="block animate-in fade-in duration-1000 slide-in-from-bottom-4"
                         >
                             {currentPageItems.map(product => {
                                 if (!product) return null;
@@ -128,40 +139,40 @@ export default function CustomerDisplay() {
                                 }
 
                                 return (
-                                    <div key={product.id} className="flex flex-col gap-1">
-                                        <div className="flex items-end gap-4 group">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-3xl font-black tracking-tight text-slate-800 uppercase">
-                                                    {product.name}
+                                    <div key={product.id} className="block mb-6 relative z-10 w-full text-slate-800">
+                                        {/* Price block floated right so it aligns with the contour */}
+                                        <div className="float-right ml-6 flex items-baseline gap-2 pt-1 pl-4">
+                                            {hasDiscount && (
+                                                <span className="text-xl text-slate-300 line-through font-bold">
+                                                    {(Number(product.price) || 0).toFixed(0)}₺
                                                 </span>
-                                                {product.isHot && <Flame size={20} className="text-red-500 fill-red-500" />}
-                                                {product.isChefPick && <Sparkles size={20} className="text-amber-500 fill-amber-500" />}
-                                            </div>
-                                            
-                                            {/* Dynamic Dots */}
-                                            <div className="flex-1 border-b-2 border-dotted border-slate-200 mb-2 min-w-[20px]"></div>
-                                            
-                                            <div className="flex items-center gap-3">
-                                                {hasDiscount && (
-                                                    <span className="text-xl text-slate-300 line-through font-bold">
-                                                        {(Number(product.price) || 0).toFixed(0)}₺
-                                                    </span>
-                                                )}
-                                                <span className={`text-5xl font-black ${hasDiscount ? 'text-amber-500' : 'text-slate-900'}`}>
-                                                    {displayPrice.toFixed(0)}
-                                                    <span className="text-xl ml-1 text-slate-400 font-bold">₺</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="flex justify-between items-center pr-2">
-                                            <span className="text-sm text-slate-400 italic font-bold">
-                                                {product.description || 'Hatay mutfağının seçkin lezzeti, taze malzemelerle.'}
+                                            )}
+                                            <span className={`text-4xl md:text-5xl font-black tracking-tighter ${hasDiscount ? 'text-amber-500' : 'text-slate-900'}`}>
+                                                {displayPrice.toFixed(0)}
+                                                <span className="text-xl ml-1 text-slate-400 font-bold">₺</span>
                                             </span>
+                                        </div>
+
+                                        {/* Name block */}
+                                        <span className="text-2xl md:text-3xl font-black tracking-tight uppercase inline-flex items-center gap-2">
+                                            {product.name}
+                                            {product.isHot && <Flame size={20} className="text-red-500 fill-red-500" />}
+                                            {product.isChefPick && <Sparkles size={20} className="text-amber-500 fill-amber-500" />}
+                                        </span>
+                                        
+                                        {/* Dotted Spacer (Overflow hidden creates a BFC that fills the remainder of the line) */}
+                                        <div className="overflow-hidden h-4 border-b-[3px] border-dotted border-slate-200/60 mt-2 mb-3"></div>
+                                        
+                                        {/* Description & Category - Inline structure prevents BFC line-box constraints, wrapping normally */}
+                                        <div className="block pr-2 pb-1 relative">
                                             {category && (
-                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300 border border-slate-100 px-2 py-0.5 rounded-lg bg-slate-50">
+                                                <span className="float-right ml-4 mt-1 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 border border-slate-200 px-2 py-0.5 rounded-lg bg-white shadow-sm">
                                                     {category.name}
                                                 </span>
                                             )}
+                                            <span className="text-sm md:text-base text-slate-500 font-bold leading-snug">
+                                                {product.description || 'Hatay mutfağının seçkin lezzeti, taze ve doğal spesiyaller hazırlanarak servis edilir.'}
+                                            </span>
                                         </div>
                                     </div>
                                 );
