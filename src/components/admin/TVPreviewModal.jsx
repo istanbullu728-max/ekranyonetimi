@@ -3,11 +3,12 @@ import useStore from '../../store/useStore';
 import { Sparkles, Flame, Check } from 'lucide-react';
 
 export default function TVPreviewModal() {
-    const { products, categories, campaigns, showcaseImages } = useStore();
+    const { products = [], categories = [], campaigns = [], showcaseImages = [] } = useStore();
     const [currentSlide, setCurrentSlide] = useState(0);
 
     // Carousel logic
     useEffect(() => {
+        if (showcaseImages.length === 0) return;
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % showcaseImages.length);
         }, 5000);

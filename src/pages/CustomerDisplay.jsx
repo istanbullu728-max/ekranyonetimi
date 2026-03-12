@@ -4,12 +4,13 @@ import { Sparkles, Flame, Settings, Maximize2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function CustomerDisplay() {
-    const { products, categories, campaigns, showcaseImages } = useStore();
+    const { products = [], categories = [], campaigns = [], showcaseImages = [] } = useStore();
     const [currentSlide, setCurrentSlide] = useState(0);
     const navigate = useNavigate();
 
     // Carousel logic
     useEffect(() => {
+        if (showcaseImages.length === 0) return;
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % showcaseImages.length);
         }, 5000);
