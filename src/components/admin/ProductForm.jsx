@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useStore from '../../store/useStore';
 import { v4 as uuidv4 } from 'uuid';
-import { Upload, Plus, AlertCircle, ShoppingBag, X } from 'lucide-react';
+import { Plus, AlertCircle, ShoppingBag } from 'lucide-react';
 
 export default function ProductForm({ onSuccess }) {
     const { categories, addProduct } = useStore();
@@ -11,27 +11,10 @@ export default function ProductForm({ onSuccess }) {
         description: '',
         price: '',
         categoryId: categories[0]?.id || '',
-        image: '',
         available: true,
         isChefPick: false,
         isHot: false
     });
-
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            if (file.size > 2 * 1024 * 1024) {
-                alert("Dosya boyutu 2MB'dan küçük olmalıdır.");
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData({ ...formData, image: reader.result });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -149,38 +132,7 @@ export default function ProductForm({ onSuccess }) {
                     </label>
                 </div>
 
-                {/* Image Upload */}
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-400 ml-1">Ürün Görseli</label>
-                    <div className="relative border-2 border-dashed border-white/10 rounded-3xl overflow-hidden group hover:border-amber-500/30 transition-all bg-white/5 aspect-video flex flex-col items-center justify-center">
-                        {formData.image ? (
-                            <div className="relative w-full h-full">
-                                <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                                    <button 
-                                        type="button"
-                                        onClick={() => setFormData({...formData, image: ''})}
-                                        className="p-3 bg-red-500 rounded-full text-white shadow-xl hover:scale-110 transition-transform"
-                                    >
-                                        <X size={20} />
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="p-8 text-center">
-                                <Upload className="w-12 h-12 text-gray-600 mb-4 mx-auto group-hover:text-amber-500 group-hover:scale-110 transition-all" />
-                                <p className="text-sm text-gray-400">Görsel seçmek için tıklayın</p>
-                                <p className="text-xs text-gray-600 mt-2">Max 2MB, JPG/PNG</p>
-                            </div>
-                        )}
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                            className={`absolute inset-0 w-full h-full opacity-0 cursor-pointer ${formData.image ? 'hidden' : ''}`}
-                        />
-                    </div>
-                </div>
+
 
                 {/* Info Box */}
                 <div className="bg-amber-500/5 border border-amber-500/10 rounded-2xl p-4 flex gap-4">

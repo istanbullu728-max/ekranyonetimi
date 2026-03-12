@@ -58,50 +58,28 @@ export default function ProductList() {
                                         : 'border-red-500/10 grayscale-[0.8]'
                                     }`}
                                 >
-                                    {/* Image Section */}
-                                    <div className="relative aspect-[4/3] overflow-hidden bg-[#0d0d0d]">
-                                        {product.image ? (
-                                            <img 
-                                                src={product.image} 
-                                                alt={product.name} 
-                                                className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${!product.available ? 'opacity-40' : 'opacity-90'}`} 
-                                            />
-                                        ) : (
-                                            <div className="flex flex-col items-center justify-center h-full text-white/5">
-                                                <Tag size={48} />
-                                                <span className="text-xs mt-2 font-medium">Görsel Yok</span>
-                                            </div>
-                                        )}
-
-                                        {/* Status Badges */}
-                                        <div className="absolute top-4 left-4 flex gap-2 flex-col z-20">
-                                            {product.isChefPick && (
-                                                <span className="text-[10px] bg-amber-500 text-black px-3 py-1 rounded-full font-black uppercase tracking-tighter shadow-xl">
-                                                    Şefin Seçimi
-                                                </span>
-                                            )}
-                                            {product.isHot && (
-                                                <span className="text-[10px] bg-red-600 text-white px-3 py-1 rounded-full font-black uppercase tracking-tighter shadow-xl">
-                                                    Sıcak & Taze
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Sold Out Overlay */}
-                                        {!product.available && (
-                                            <div className="absolute inset-0 bg-red-950/20 flex items-center justify-center backdrop-blur-[2px] z-10 transition-all">
-                                                <div className="bg-red-600 text-white font-black px-6 py-2 rounded-xl text-lg transform -rotate-12 border-2 border-red-400 shadow-2xl drop-shadow-[0_10px_20px_rgba(220,38,38,0.5)]">
-                                                    TÜKENDİ
-                                                </div>
-                                            </div>
-                                        )}
-                                        
-                                        {/* Gradient Overlay for light theme simulation */}
-                                        {product.available && <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#18181b] to-transparent z-10"></div>}
-                                    </div>
-
                                     {/* Content Section */}
-                                    <div className="p-6 pt-2 flex-1 flex flex-col justify-between gap-4 z-20 relative">
+                                    <div className="p-6 flex-1 flex flex-col justify-between gap-4 z-20 relative">
+                                        {/* Status & Sold Out Info */}
+                                        <div className="flex justify-between items-start mb-2">
+                                            <div className="flex gap-2">
+                                                {product.isChefPick && (
+                                                    <span className="text-[10px] bg-amber-500 text-black px-3 py-1 rounded-full font-black uppercase tracking-tighter shadow-xl">
+                                                        Şefin Seçimi
+                                                    </span>
+                                                )}
+                                                {product.isHot && (
+                                                    <span className="text-[10px] bg-red-600 text-white px-3 py-1 rounded-full font-black uppercase tracking-tighter shadow-xl">
+                                                        Sıcak & Taze
+                                                    </span>
+                                                )}
+                                                {!product.available && (
+                                                    <span className="text-[10px] bg-red-950 text-red-400 border border-red-500/30 px-3 py-1 rounded-full font-black uppercase tracking-tighter">
+                                                        TÜKENDİ
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
                                         <div>
                                             <div className="flex justify-between items-start gap-4 mb-2">
                                                 <h4 className="font-bold text-xl leading-tight text-white group-hover:text-amber-500 transition-colors">{product.name}</h4>
