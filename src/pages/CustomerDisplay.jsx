@@ -205,14 +205,13 @@ export default function CustomerDisplay() {
                 ))}
             </div>
 
-            {/* Admin/Settings Controls - NOW ALWAYS VISIBLE FOR USER */}
-            <div className="absolute bottom-6 right-6 z-50 flex gap-2">
+            <div className="absolute bottom-8 right-8 z-50 flex gap-3">
                 <button
                     onClick={() => navigate('/admin')}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-md border border-slate-200 text-slate-400 hover:text-amber-600 hover:border-amber-500/30 hover:shadow-lg transition-all text-[10px] uppercase tracking-widest font-black shadow-sm"
+                    className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-300 text-slate-700 hover:text-amber-600 hover:border-amber-500/50 hover:shadow-2xl transition-all text-xs uppercase tracking-widest font-black shadow-lg"
                 >
-                    <Settings size={16} />
-                    <span>Yönetim Paneli</span>
+                    <Settings size={20} className="animate-spin-slow" />
+                    <span>Panel Girişi</span>
                 </button>
                 <button
                     onClick={toggleFullScreen}
