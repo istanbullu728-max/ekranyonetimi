@@ -7,7 +7,20 @@ import useStore from './store/useStore';
 import { useEffect } from 'react';
 
 // Create a singleton broadcast channel
-const bc = new BroadcastChannel('doner_signage_channel');
+// Safe Broadcast Channel utility
+const getBroadcastChannel = () => {
+  if (typeof window !== 'undefined' && window.BroadcastChannel) {
+    try {
+      return new BroadcastChannel('doner_signage_channel');
+    } catch (e) {
+      console.error('BroadcastChannel failed:', e);
+      return null;
+    }
+  }
+  return null;
+};
+
+const bc = getBroadcastChannel();
 
 // Simple Protected Route Component
 const PrivateRoute = ({ children }) => {
@@ -19,6 +32,8 @@ function App() {
   const syncState = useStore((state) => state.syncState);
 
   useEffect(() => {
+    if (!bc) return;
+
     // Listen for messages from other tabs (Admin panel updating Customer display)
     bc.onmessage = (event) => {
       if (event.data && event.data.type === 'SYNC_STATE') {
@@ -36,21 +51,16 @@ function App() {
         showcaseImages: state.showcaseImages,
         settings: state.settings
       };
-      const prevSnapshot = {
-        categories: prevState.categories,
-        products: prevState.products,
-        campaigns: prevState.campaigns,
-        showcaseImages: prevState.showcaseImages,
-        settings: prevState.settings
-      };
-
-      if (JSON.stringify(snapshot) !== JSON.stringify(prevSnapshot)) {
+      
+      // Simple equality check to minimize broadcasts
+      if (JSON.stringify(state.products) !== JSON.stringify(prevState.products) ||
+          JSON.stringify(state.campaigns) !== JSON.stringify(prevState.campaigns)) {
         bc.postMessage({ type: 'SYNC_STATE', payload: snapshot });
       }
     });
 
     return () => {
-      bc.close();
+      if (bc) bc.close();
       unsubscribe();
     };
   }, [syncState]);

@@ -7,7 +7,11 @@ const ITEMS_PER_PAGE = 10;
 const SLIDE_DURATION = 8000; // 8 seconds
 
 export default function CustomerDisplay() {
-    const { products = [], categories = [], campaigns = [], showcaseImages = [] } = useStore();
+    const products = useStore((state) => state.products || []);
+    const categories = useStore((state) => state.categories || []);
+    const campaigns = useStore((state) => state.campaigns || []);
+    const showcaseImages = useStore((state) => state.showcaseImages || []);
+    
     const [currentMenuPage, setCurrentMenuPage] = useState(0);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [progress, setProgress] = useState(0);
@@ -15,12 +19,18 @@ export default function CustomerDisplay() {
 
     // 1. Process Data for Pagination
     const paginatedMenu = useMemo(() => {
-        const availableProducts = products.filter(p => p.available);
-        const chunks = [];
-        for (let i = 0; i < availableProducts.length; i += ITEMS_PER_PAGE) {
-            chunks.push(availableProducts.slice(i, i + ITEMS_PER_PAGE));
+        try {
+            if (!Array.isArray(products)) return [];
+            const availableProducts = products.filter(p => p && p.available);
+            const chunks = [];
+            for (let i = 0; i < availableProducts.length; i += ITEMS_PER_PAGE) {
+                chunks.push(availableProducts.slice(i, i + ITEMS_PER_PAGE));
+            }
+            return chunks;
+        } catch (e) {
+            console.error('Pagination error:', e);
+            return [];
         }
-        return chunks;
     }, [products]);
 
     // 2. Menu Auto-Pagination & Progress Bar Logic
@@ -157,9 +167,20 @@ export default function CustomerDisplay() {
                             })}
                         </div>
                     ) : (
-                        <div className="h-full flex flex-col items-center justify-center text-slate-200 gap-4 opacity-50">
-                            <LayoutDashboard size={48} className="animate-pulse" />
-                            <p className="font-black uppercase tracking-widest text-xs">Menü yükleniyor...</p>
+                        <div className="h-full flex flex-col items-center justify-center text-slate-400 gap-8">
+                            <div className="w-24 h-24 bg-slate-100 rounded-[2rem] flex items-center justify-center animate-pulse">
+                                <LayoutDashboard size={48} className="text-slate-300" />
+                            </div>
+                            <div className="text-center space-y-2">
+                                <p className="font-black uppercase tracking-[0.3em] text-sm text-slate-800">Menü Verisi Bulunamadı</p>
+                                <p className="text-xs text-slate-400 font-bold max-w-xs mx-auto px-4">Lütfen Admin panelinden ürün ekleyin veya sayfayı yenileyin.</p>
+                            </div>
+                            <button 
+                                onClick={() => window.location.reload()}
+                                className="mt-4 px-8 py-3 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-amber-500 transition-all shadow-xl"
+                            >
+                                Sayfayı Yenile
+                            </button>
                         </div>
                     )}
                 </div>
