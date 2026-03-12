@@ -18,7 +18,17 @@ const useStore = create(
                 { id: 3, url: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80', active: true }
             ],
 
-            // Actions
+            // Category Actions
+            addCategory: (category) => set((state) => ({
+                categories: [...state.categories, category]
+            })),
+            deleteCategory: (id) => set((state) => ({
+                categories: state.categories.filter(c => c.id !== id),
+                // Optionally remove or unassign products here if we wanted
+                products: state.products.filter(p => p.categoryId !== id)
+            })),
+
+            // Product Actions
             setProducts: (products) => set({ products }),
             updateProduct: (id, updates) => set((state) => ({
                 products: state.products.map(p => p.id === id ? { ...p, ...updates } : p)
@@ -30,6 +40,7 @@ const useStore = create(
                 products: state.products.filter(p => p.id !== id)
             })),
 
+            // Campaign Actions
             setCampaigns: (campaigns) => set({ campaigns }),
             addCampaign: (campaign) => set((state) => ({
                 campaigns: [...state.campaigns, campaign]
@@ -41,10 +52,17 @@ const useStore = create(
                 campaigns: state.campaigns.filter(c => c.id !== id)
             })),
 
+            // Showcase Actions
+            addShowcaseImage: (image) => set((state) => ({
+                showcaseImages: [...state.showcaseImages, image]
+            })),
             updateShowcaseImage: (id, url) => set((state) => ({
                 showcaseImages: state.showcaseImages.map(img => 
                     img.id === id ? { ...img, url } : img
                 )
+            })),
+            removeShowcaseImage: (id) => set((state) => ({
+                showcaseImages: state.showcaseImages.filter(img => img.id !== id)
             })),
 
             hasHydrated: false,

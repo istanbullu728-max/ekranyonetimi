@@ -1,9 +1,10 @@
 import React from 'react';
 import useStore from '../../store/useStore';
-import { Upload, X, ImageIcon, Sparkles, AlertCircle } from 'lucide-react';
+import { Upload, X, ImageIcon, Sparkles, AlertCircle, Plus, Trash2 } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ShowcaseManager() {
-    const { showcaseImages, updateShowcaseImage } = useStore();
+    const { showcaseImages, updateShowcaseImage, addShowcaseImage, removeShowcaseImage } = useStore();
 
     const handleImageUpload = (id, e) => {
         const file = e.target.files[0];
@@ -15,9 +16,25 @@ export default function ShowcaseManager() {
 
             const reader = new FileReader();
             reader.onloadend = () => {
-                updateShowcaseImage(id, reader.result);
+                if (id) {
+                    // Update existing
+                    updateShowcaseImage(id, reader.result);
+                } else {
+                    // Add new
+                    addShowcaseImage({
+                        id: uuidv4(),
+                        url: reader.result,
+                        active: true
+                    });
+                }
             };
             reader.readAsDataURL(file);
+        }
+    };
+
+    const handleDelete = (id) => {
+        if (window.confirm("Bu görseli vitrinden kaldırmak istediğinize emin misiniz?")) {
+            removeShowcaseImage(id);
         }
     };
 
@@ -30,8 +47,8 @@ export default function ShowcaseManager() {
                         Vitrin Görselleri
                     </h2>
                     <p className="text-slate-500 max-w-xl text-sm leading-relaxed font-medium">
-                        TV ekranının sağ tarafında (%30) dönecek olan 3 ana görseli buradan yönetin. 
-                        Yüklediğiniz görseller anında canlı yayına geçer.
+                        TV ekranının sağ tarafında (%30) dönecek olan görselleri buradan yönetin. 
+                        İstediğiniz kadar görsel ekleyebilirsiniz. Eklediğiniz görseller anında canlı yayına geçer.
                     </p>
                 </div>
                 <div className="flex items-center gap-3 bg-slate-50 px-6 py-4 rounded-3xl border border-slate-100">
@@ -40,15 +57,22 @@ export default function ShowcaseManager() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {showcaseImages.map((img, index) => (
                     <div key={img.id} className="group flex flex-col gap-4">
                         <div className="flex justify-between items-center px-2">
                             <span className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">{index + 1}. Görsel</span>
                             <div className="h-[1px] flex-1 bg-slate-100 mx-4"></div>
+                            <button 
+                                onClick={() => handleDelete(img.id)}
+                                className="text-slate-300 hover:text-red-500 transition-colors p-1"
+                                title="Görseli Sil"
+                            >
+                                <Trash2 size={16} />
+                            </button>
                         </div>
                         
-                        <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden border-2 border-dashed border-slate-200 bg-slate-50 hover:border-amber-500/30 transition-all group/box shadow-sm">
+                        <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden border-2 border-slate-200 bg-slate-50 hover:border-amber-500/30 transition-all group/box shadow-sm">
                             {img.url ? (
                                 <>
                                     <img src={img.url} alt={`Vitrin ${img.id}`} className="w-full h-full object-cover transition-transform duration-700 group-hover/box:scale-110 opacity-80" />
@@ -80,6 +104,27 @@ export default function ShowcaseManager() {
                         </div>
                     </div>
                 ))}
+
+                {/* Add New Placeholder Container */}
+                <div className="group flex flex-col gap-4">
+                    <div className="flex justify-between items-center px-2">
+                        <span className="text-xs font-black text-amber-500 uppercase tracking-[0.2em]">Yeni Görsel</span>
+                        <div className="h-[1px] flex-1 bg-slate-100 mx-4"></div>
+                    </div>
+                    
+                    <label className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden border-2 border-dashed border-amber-200 bg-amber-50/50 hover:bg-amber-50 transition-all cursor-pointer flex flex-col items-center justify-center group/add shadow-sm hover:border-amber-400">
+                        <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center text-amber-500 mb-4 group-hover/add:scale-110 group-hover/add:bg-amber-500 group-hover/add:text-white transition-all shadow-sm">
+                            <Plus size={32} />
+                        </div>
+                        <p className="text-xs text-amber-600 font-black uppercase tracking-widest">Görsel Ekle</p>
+                        <input 
+                            type="file" 
+                            accept="image/*" 
+                            className="hidden" 
+                            onChange={(e) => handleImageUpload(null, e)} 
+                        />
+                    </label>
+                </div>
             </div>
 
             <div className="bg-amber-50 border border-amber-100 rounded-3xl p-8 flex gap-5 items-start">
@@ -88,7 +133,7 @@ export default function ShowcaseManager() {
                     <p className="text-sm font-black text-amber-800 uppercase tracking-tight">Önemli Tavsiye</p>
                     <p className="text-xs text-amber-700/70 font-bold uppercase tracking-tighter leading-relaxed">
                         En iyi görünüm için dikey (9:16 veya 3:4) formatta, yüksek kaliteli ve iştah açıcı görseller tercih edin. 
-                        TV ekranı saniyeler içinde otomatik olarak güncellenecektir.
+                        TV ekranı saniyeler içinde otomatik olarak güncellenecektir. İstediğiniz kadar görsel ekleyebilirsiniz.
                     </p>
                 </div>
             </div>
