@@ -1,39 +1,46 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Monitor, Smartphone, Zap, CheckCircle, ArrowRight, Menu, X, Play, LogIn, ChevronRight, LayoutDashboard, Clock, PenTool } from 'lucide-react';
+import { Monitor, Smartphone, Zap, CheckCircle, ArrowRight, Menu, X, Play, LogIn, ChevronRight, LayoutDashboard, Clock, PenTool, AlertTriangle, ScreenShare, Code, ShieldCheck } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function LandingPage() {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     return (
-        <div className="min-h-screen bg-[#FDFBF7] text-slate-900 font-sans selection:bg-amber-100 selection:text-amber-900">
+        <div className="min-h-screen bg-[#0a0a0b] text-white font-sans selection:bg-[#FF5722]/30 selection:text-[#FF5722] overflow-x-hidden">
             
+            {/* Legal Compliance Banner */}
+            <div className="bg-[#FF5722] text-black w-full py-2.5 px-4 text-center text-xs md:text-sm font-black uppercase tracking-widest flex items-center justify-center gap-3">
+                <AlertTriangle size={16} className="animate-pulse" />
+                <span className="hidden sm:inline">📢 Yeni Yönetmeliğe %100 Uyum:</span> Kapıda ve Masada Fiyat Listesi Bulundurma Zorunluluğuna Dijital Çözüm!
+            </div>
+
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FDFBF7]/80 backdrop-blur-xl border-b border-slate-200/50">
+            <nav className="fixed top-[44px] sm:top-[44px] left-0 right-0 z-50 bg-[#0a0a0b]/80 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                        <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-black shadow-lg shadow-amber-500/20 group-hover:rotate-6 transition-transform">
+                        <div className="w-10 h-10 bg-[#FF5722] rounded-xl flex items-center justify-center text-black shadow-lg shadow-[#FF5722]/20 group-hover:rotate-6 transition-transform">
                             <Monitor size={20} className="font-bold" />
                         </div>
-                        <span className="text-xl font-black tracking-tighter text-slate-900 uppercase">Döner Akış</span>
+                        <span className="text-xl font-black tracking-tighter text-white uppercase">Döner Akış <span className="text-[#FF5722]">.</span></span>
                     </div>
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-10">
-                        <a href="#features" className="text-sm font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors">Özellikler</a>
-                        <a href="#preview" className="text-sm font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors">Önizleme</a>
-                        <div className="h-6 w-px bg-slate-200"></div>
+                        <a href="#features" className="text-sm font-black uppercase tracking-widest text-[#a1a1aa] hover:text-white transition-colors">Özellikler</a>
+                        <a href="#how-it-works" className="text-sm font-black uppercase tracking-widest text-[#a1a1aa] hover:text-white transition-colors">Nasıl Çalışır</a>
+                        <div className="h-6 w-px bg-white/10"></div>
                         <button 
                             onClick={() => navigate('/login')}
-                            className="text-sm font-black uppercase tracking-widest text-slate-900 hover:bg-slate-100 px-6 py-2.5 rounded-xl transition-all flex items-center gap-2"
+                            className="text-sm font-black uppercase tracking-widest text-white hover:bg-white/5 px-6 py-2.5 rounded-xl transition-all flex items-center gap-2"
                         >
                             <LogIn size={18} />
                             Giriş Yap
                         </button>
                         <button 
                             onClick={() => navigate('/admin')}
-                            className="bg-slate-900 text-white px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center gap-2"
+                            className="bg-[#FF5722] text-black px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e64a19] transition-all shadow-[0_0_20px_rgba(255,87,34,0.3)] flex items-center gap-2"
                         >
                             Hemen Başla
                             <ArrowRight size={16} />
@@ -41,232 +48,291 @@ export default function LandingPage() {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-slate-900">
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-white">
                         {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
                     </button>
                 </div>
 
                 {/* Mobile Menu */}
-                {isMenuOpen && (
-                    <div className="md:hidden absolute top-20 left-0 right-0 bg-white border-b border-slate-100 p-6 flex flex-col gap-4 animate-in slide-in-from-top-4 duration-300">
-                        <a href="#features" onClick={() => setIsMenuOpen(false)} className="text-lg font-black uppercase tracking-widest p-4 bg-slate-50 rounded-2xl">Özellikler</a>
-                        <button 
-                            onClick={() => navigate('/login')}
-                            className="w-full bg-slate-50 p-4 rounded-2xl font-black uppercase tracking-widest text-left"
+                <AnimatePresence>
+                    {isMenuOpen && (
+                        <motion.div 
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            className="md:hidden absolute top-20 left-0 right-0 bg-[#161618] border-b border-white/5 p-6 flex flex-col gap-4 shadow-2xl"
                         >
-                            Giriş Yap
-                        </button>
-                        <button 
-                            onClick={() => navigate('/admin')}
-                            className="w-full bg-amber-500 p-4 rounded-2xl font-black uppercase tracking-widest"
-                        >
-                            Hemen Başla
-                        </button>
-                    </div>
-                )}
+                            <a href="#features" onClick={() => setIsMenuOpen(false)} className="text-lg font-black uppercase tracking-widest p-4 bg-white/5 rounded-2xl text-white">Özellikler</a>
+                            <a href="#how-it-works" onClick={() => setIsMenuOpen(false)} className="text-lg font-black uppercase tracking-widest p-4 bg-white/5 rounded-2xl text-white">Nasıl Çalışır</a>
+                            <button 
+                                onClick={() => { setIsMenuOpen(false); navigate('/login'); }}
+                                className="w-full bg-white/5 p-4 rounded-2xl font-black uppercase tracking-widest text-left text-white"
+                            >
+                                Giriş Yap
+                            </button>
+                            <button 
+                                onClick={() => { setIsMenuOpen(false); navigate('/admin'); }}
+                                className="w-full bg-[#FF5722] p-4 rounded-2xl font-black text-black uppercase tracking-widest"
+                            >
+                                Hemen Başla
+                            </button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </nav>
 
             {/* Hero Section */}
-            <section className="relative pt-40 pb-32 px-6 overflow-hidden">
-                <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
-                    {/* Badge */}
-                    <div className="mb-8 px-5 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full flex items-center gap-2 animate-bounce">
-                        <Zap size={14} className="text-amber-600 fill-amber-600" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-700">Artık Yayındayız</span>
-                    </div>
-
-                    <h1 className="text-5xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] max-w-5xl mb-8 uppercase">
-                        Menünüzü <span className="text-amber-500">2 Dakikada</span> TV'ye Taşıyın.
-                    </h1>
+            <section className="relative pt-48 pb-32 px-6 overflow-hidden">
+                <div className="max-w-7xl mx-auto flex flex-col items-center text-center z-10 relative">
                     
-                    <p className="text-xl md:text-2xl text-slate-500 font-medium max-w-3xl mb-12 leading-relaxed">
-                        Tasarımcıya ihtiyacınız yok. Ürünleri girin, akıllı sistemimiz menünüzü otomatik oluştursun ve profesyonel geçişlerle TV'nize yansıtsın.
-                    </p>
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-8 px-5 py-2 border border-white/10 bg-white/5 backdrop-blur-md rounded-full flex items-center gap-2"
+                    >
+                        <ShieldCheck size={14} className="text-[#FF5722]" />
+                        <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#a1a1aa]">1 Ocak 2024 Yönetmeliğine Uygundur</span>
+                    </motion.div>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-6">
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-5xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] max-w-5xl mb-8 uppercase"
+                    >
+                        Özel Cihaz Yok. <br/>
+                        Kablo Yok. <br/>
+                        <span className="text-[#FF5722]">Karmaşa Yok.</span>
+                    </motion.h1>
+                    
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-xl md:text-2xl text-[#a1a1aa] font-medium max-w-3xl mb-12 leading-relaxed"
+                    >
+                        Mevcut herhangi bir ekranınızı saniyeler içinde <strong className="text-white">Akıllı Menüye</strong> dönüştürün. Yasal zorunlulukları tek tıkla halledin, tasarımla uğraşmayın.
+                    </motion.p>
+
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto"
+                    >
                         <button 
                             onClick={() => navigate('/admin')}
-                            className="w-full sm:w-auto px-12 py-6 bg-amber-500 text-black rounded-[2rem] font-black text-xl uppercase tracking-tighter hover:scale-105 transition-all shadow-2xl shadow-amber-500/30 flex items-center justify-center gap-3 group"
+                            className="w-full sm:w-auto px-12 py-6 bg-[#FF5722] text-black rounded-[2rem] font-black text-base sm:text-lg uppercase tracking-widest hover:scale-105 transition-all shadow-[0_0_40px_rgba(255,87,34,0.4)] flex items-center justify-center gap-3 group"
                         >
-                            Hemen Ücretsiz Başla
+                            Ücretsiz Başla ve Yasaya Uyum Sağla
                             <ArrowRight className="group-hover:translate-x-2 transition-transform" />
                         </button>
-                        <button 
-                            onClick={() => navigate('/display')}
-                            className="w-full sm:w-auto px-12 py-6 bg-white border-2 border-slate-100 text-slate-900 rounded-[2rem] font-black text-xl uppercase tracking-tighter hover:bg-slate-50 transition-all flex items-center justify-center gap-3"
-                        >
-                            Canlı Demoyu İzle
-                            <Play size={20} className="fill-slate-900" />
-                        </button>
-                    </div>
+                    </motion.div>
 
-                    {/* Meta Vibe */}
-                    <div className="mt-16 flex flex-wrap justify-center gap-8 text-slate-300 font-black uppercase tracking-[0.3em] text-[10px]">
-                        <span className="flex items-center gap-2"><CheckCircle size={14} /> KURULUM GEREKTİRMEZ</span>
-                        <span className="flex items-center gap-2"><CheckCircle size={14} /> KREDİ KARTI GEREKMEZ</span>
-                        <span className="flex items-center gap-2"><CheckCircle size={14} /> SINIRSIZ GÜNCELLEME</span>
-                    </div>
+                    <motion.div 
+                         initial={{ opacity: 0 }}
+                         animate={{ opacity: 1 }}
+                         transition={{ delay: 0.5 }}
+                        className="mt-12 text-[#a1a1aa] font-black uppercase tracking-[0.2em] text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 opacity-60"
+                    >
+                        <span>Kurulum Ücreti Yok</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span>Teknik Bilgi Gerekmez</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span>14 Gün Ücretsiz</span>
+                    </motion.div>
                 </div>
 
-                {/* Hero Decoration */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-[120%] h-full opacity-30">
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/10 blur-[120px] rounded-full"></div>
-                    <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-slate-400/10 blur-[120px] rounded-full"></div>
-                </div>
-            </section>
-
-            {/* Product Preview Section (Laptop & TV) */}
-            <section id="preview" className="px-6 py-20 bg-slate-50/50 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto">
-                    <div className="relative flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20 translate-y-20 animate-in slide-in-from-bottom-20 duration-1000 fill-mode-forwards">
-                        
-                        {/* Admin Panel Mockup (Laptop) */}
-                        <div className="relative w-full max-w-2xl group">
-                            <div className="absolute -inset-4 bg-gradient-to-tr from-slate-200 to-transparent blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                            <div className="relative bg-white border-[12px] border-slate-900 rounded-[2.5rem] shadow-2xl overflow-hidden aspect-[16/10] flex flex-col">
-                                <div className="h-4 bg-slate-900 flex items-center gap-1.5 px-6">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-slate-600"></div>
-                                    <div className="w-1.5 h-1.5 rounded-full bg-slate-600"></div>
-                                    <div className="w-1.5 h-1.5 rounded-full bg-slate-600"></div>
-                                </div>
-                                <div className="flex-1 bg-white p-6 opacity-40">
-                                    <div className="flex gap-4 mb-8">
-                                        <div className="w-1/4 h-32 bg-slate-100 rounded-2xl"></div>
-                                        <div className="flex-1 space-y-4">
-                                            <div className="h-6 w-1/2 bg-slate-100 rounded-full"></div>
-                                            <div className="h-4 w-full bg-slate-50 rounded-full"></div>
-                                            <div className="h-4 w-3/4 bg-slate-50 rounded-full"></div>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="h-40 bg-slate-50 rounded-3xl border border-dashed border-slate-200"></div>
-                                        <div className="h-40 bg-slate-50 rounded-3xl border border-dashed border-slate-200"></div>
-                                    </div>
-                                </div>
-                                {/* Floating Overlay Icon */}
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="bg-amber-500 text-black px-8 py-4 rounded-3xl font-black uppercase tracking-widest shadow-2xl shadow-amber-500/50 scale-110">YÖNETİM PANELİ</div>
-                                </div>
-                            </div>
-                            <div className="absolute -bottom-10 -right-10 hidden lg:block animate-pulse">
-                                <ArrowRight size={80} className="text-amber-500 rotate-[15deg]" />
-                            </div>
-                        </div>
-
-                        {/* TV Display Mockup */}
-                        <div className="relative w-full max-w-md group">
-                            <div className="absolute -inset-4 bg-gradient-to-bl from-amber-500/20 to-transparent blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                            <div className="relative bg-[#111] border-[16px] border-slate-800 rounded-[3rem] shadow-2xl overflow-hidden aspect-[9/16] flex flex-col">
-                                <div className="flex-1 bg-[#FDFBF7] p-8">
-                                    <div className="h-4 w-12 bg-amber-500 mb-6 rounded-full"></div>
-                                    <div className="space-y-6">
-                                        {[1,2,3,4,5,6].map(i => (
-                                            <div key={i} className="flex justify-between items-end border-b border-slate-100 pb-2">
-                                                <div className="h-3 w-28 bg-slate-200 rounded-full"></div>
-                                                <div className="h-4 w-10 bg-slate-300 rounded-full"></div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className="absolute bottom-10 left-8 right-8 h-40 bg-slate-100 rounded-2xl"></div>
-                                </div>
-                                {/* Floating Label */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                                    <div className="bg-white border-2 border-slate-900 text-black px-8 py-4 rounded-3xl font-black uppercase tracking-widest shadow-2xl animate-bounce">TV GÖRÜNÜMÜ</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="mt-32 text-center text-slate-400 font-black uppercase tracking-[0.5em] text-xs">
-                        PANELDEN TV'YE KESİNTİSİZ AKIŞ
-                    </div>
+                {/* Hero Glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-full h-full max-w-[1000px] pointer-events-none">
+                    <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#FF5722]/20 blur-[150px] rounded-full mix-blend-screen mix-blend-screen"></div>
+                    <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-indigo-500/10 blur-[150px] rounded-full mix-blend-screen"></div>
                 </div>
             </section>
 
-            {/* Features Grid */}
-            <section id="features" className="py-32 px-6">
+            {/* Legal Shield Card Section */}
+            <section className="px-6 py-12 -mt-10 relative z-20">
+                <div className="max-w-6xl mx-auto">
+                     <motion.div 
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        className="bg-[#161618] border border-white/10 rounded-[2.5rem] p-10 md:p-16 flex flex-col md:flex-row items-center gap-12 shadow-2xl backdrop-blur-md relative overflow-hidden group"
+                     >
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF5722]/5 blur-[80px] rounded-full group-hover:bg-[#FF5722]/10 transition-colors"></div>
+                        <div className="w-24 h-24 bg-white/5 hidden md:flex rounded-3xl border border-white/10 items-center justify-center shrink-0">
+                            <ShieldCheck size={48} className="text-[#FF5722]" />
+                        </div>
+                        <div className="flex-1 text-center md:text-left">
+                            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">Resmi Gazete Uyumlu.</h2>
+                            <p className="text-[#a1a1aa] text-lg font-medium leading-relaxed">
+                                Kapıda ve masada fiyat listesi bulundurma yönetmeliği için kusursuz çözüm. Denetimlerden tam not alın. Yeni yasaya uygun fiyat listeleme sistemini hemen kurun, <strong className="text-white">ceza riskini ortadan kaldırın.</strong>
+                            </p>
+                        </div>
+                     </motion.div>
+                </div>
+            </section>
+
+            {/* Hardware Agnostic Section */}
+            <section id="features" className="py-24 px-6 relative">
+                 <div className="max-w-7xl mx-auto text-center mb-20">
+                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 drop-shadow-lg">
+                        Sınırları Kaldırın. <br/><span className="text-[#a1a1aa]">Donanıma Bağlı Kalmayın.</span>
+                    </h2>
+                    <p className="text-xl text-[#a1a1aa] max-w-3xl mx-auto font-medium">
+                        Marka veya model fark etmez. Tarayıcısı olan her ekran artık sizin profesyonel vitrininiz.
+                    </p>
+                 </div>
+
+                 <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                     {[
+                         { icon: Monitor, title: "Smart TV", desc: "Samsung, LG, Philips veya herhangi bir akıllı televizyon." },
+                         { icon: ScreenShare, title: "Android Box", desc: "Sıradan bir monitörü veya eski TV'yi anında akıllandırın." },
+                         { icon: Smartphone, title: "Tablet", desc: "Masaüstü, kasa yanı veya kapı girişi bilgilendirme ekranları." },
+                         { icon: Code, title: "Eski Laptop", desc: "Arka odada duran eski cihazınızı, kusursuz bir menü sunucusuna dönüştürün." },
+                     ].map((item, i) => (
+                          <motion.div 
+                            key={i}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className="bg-[#161618] border border-white/5 rounded-3xl p-8 hover:bg-white/5 hover:border-white/10 transition-all cursor-pointer"
+                          >
+                            <item.icon size={32} className="text-[#FF5722] mb-6" />
+                            <h3 className="text-xl font-black uppercase tracking-widest mb-3">{item.title}</h3>
+                            <p className="text-[#a1a1aa] text-sm font-medium leading-relaxed">{item.desc}</p>
+                          </motion.div>
+                     ))}
+                 </div>
+            </section>
+
+            {/* Smart Auto Slide Highlight */}
+            <section className="py-24 px-6 relative bg-gradient-to-b from-transparent to-[#161618]/50">
+                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+                     <div className="flex-1 md:pr-12">
+                         <div className="w-16 h-16 bg-[#FF5722]/10 rounded-2xl flex items-center justify-center mb-8 border border-[#FF5722]/20">
+                             <Menu size={32} className="text-[#FF5722]" />
+                         </div>
+                         <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6 leading-tight">
+                             Akıllı <br/>Sayfalama 
+                         </h2>
+                         <p className="text-[#a1a1aa] text-lg font-medium leading-relaxed mb-8">
+                            Ürünleriniz ekrana sığmazsa diye dert etmeyin. Algoritmamız menünüzü kategori bazlı otomatik böler ve belirlediğiniz sürelerde (örn: 8 saniye) şık, profesyonel geçişlerle müşterilerinize sunar.
+                         </p>
+                         <button onClick={() => navigate('/display')} className="text-[#FF5722] font-black uppercase tracking-widest text-sm flex items-center gap-2 hover:gap-4 transition-all group">
+                             Canlı Demoyu Görüntüle <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                         </button>
+                     </div>
+                     <div className="flex-1 w-full relative">
+                         {/* Abstract UI Representation */}
+                         <div className="bg-[#0a0a0b] border border-white/10 rounded-[2.5rem] p-6 shadow-2xl relative overflow-hidden aspect-video mockup-container">
+                              <div className="h-4 w-24 bg-[#FF5722] rounded-full mb-6"></div>
+                              <div className="space-y-4">
+                                  <div className="flex justify-between items-center"><div className="w-1/2 h-3 bg-white/20 rounded-full"></div><div className="w-10 h-4 bg-[#FF5722]/50 rounded-full"></div></div>
+                                  <div className="flex justify-between items-center"><div className="w-2/3 h-3 bg-white/20 rounded-full"></div><div className="w-12 h-4 bg-[#FF5722]/50 rounded-full"></div></div>
+                                  <div className="flex justify-between items-center"><div className="w-1/3 h-3 bg-white/20 rounded-full"></div><div className="w-8 h-4 bg-[#FF5722]/50 rounded-full"></div></div>
+                              </div>
+                              <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/5">
+                                  <motion.div 
+                                    initial={{ width: "0%" }}
+                                    animate={{ width: "100%" }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                                    className="h-full bg-[#FF5722]"
+                                  ></motion.div>
+                              </div>
+                         </div>
+                     </div>
+                 </div>
+            </section>
+
+            {/* 3 Step Setup Section */}
+            <section id="how-it-works" className="py-32 px-6">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                        
-                        {/* Feature 1 */}
-                        <div className="p-10 bg-white border border-slate-100 rounded-[2.5rem] hover:shadow-2xl hover:shadow-amber-500/5 transition-all group">
-                            <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-600 mb-8 group-hover:scale-110 transition-transform">
-                                <LayoutDashboard size={32} />
-                            </div>
-                            <h3 className="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tighter">Otomatik Sayfalama</h3>
-                            <p className="text-slate-500 font-medium leading-relaxed">
-                                Menünüz ekrana sığmazsa dert etmeyin. Sistemimiz ürünleri otomatik böler ve 8 saniyede bir zarif geçişler yapar.
-                            </p>
-                        </div>
+                    <div className="text-center mb-24">
+                        <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4">Aylarca Değil, <span className="text-[#FF5722]">Dakikalar İçinde</span> Sahnede.</h2>
+                        <p className="text-[#a1a1aa] text-lg font-medium">3 adımlık sihirli kurulum ile IT ekibine ihtiyacınız yok.</p>
+                    </div>
 
-                        {/* Feature 2 */}
-                        <div className="p-10 bg-white border border-slate-100 rounded-[2.5rem] hover:shadow-2xl hover:shadow-amber-500/5 transition-all group">
-                            <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-600 mb-8 group-hover:scale-110 transition-transform">
-                                <Clock size={32} />
-                            </div>
-                            <h3 className="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tighter">Anlık Güncelleme</h3>
-                            <p className="text-slate-500 font-medium leading-relaxed">
-                                Fiyat mı değişti? Telefonunuzdan güncelleyin, dükkandaki TV'de saniyeler içinde otomatik olarak değişsin.
-                            </p>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+                        {/* Connecting Line */}
+                        <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-                        {/* Feature 3 */}
-                        <div className="p-10 bg-white border border-slate-100 rounded-[2.5rem] hover:shadow-2xl hover:shadow-amber-500/5 transition-all group">
-                            <div className="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-600 mb-8 group-hover:scale-110 transition-transform">
-                                <PenTool size={32} />
-                            </div>
-                            <h3 className="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tighter">Tasarımcı İçinde</h3>
-                            <p className="text-slate-500 font-medium leading-relaxed">
-                                Siz sadece metni yazın; yerleşim, hizalama ve estetik her şeyi yapay zekalı premium şablonlarımız halletsin.
-                            </p>
-                        </div>
-
+                        {[
+                            { step: "1", title: "Listeni Oluştur", desc: "Ürün isimlerini ve fiyatlarını admin panelinden hızlıca girin. Saniyeler sürer." },
+                            { step: "2", title: "Kodu Eşleştir", desc: "TV tarayıcınızdan verilen adrese girip, ekranda çıkan 4 haneli kodu tanımlayın." },
+                            { step: "3", title: "Yasalara Uyum Sağla", desc: "Tek tıkla yayına alın, vitrindeki QR menünüz ve TV ekranınız anında senkronize olsun." }
+                        ].map((item, i) => (
+                             <motion.div 
+                                key={i}
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.2 }}
+                                className="relative flex flex-col items-center text-center"
+                             >
+                                 <div className="w-20 h-20 bg-[#161618] border border-[#FF5722]/30 rounded-full flex items-center justify-center text-3xl font-black text-[#FF5722] shadow-[0_0_30px_rgba(255,87,34,0.15)] mb-8 z-10">
+                                     {item.step}
+                                 </div>
+                                 <h3 className="text-2xl font-black uppercase tracking-widest mb-4">{item.title}</h3>
+                                 <p className="text-[#a1a1aa] leading-relaxed font-medium">{item.desc}</p>
+                             </motion.div>
+                        ))}
                     </div>
                 </div>
             </section>
 
             {/* CTA Full Width */}
             <section className="px-6 py-20 pb-40">
-                <div className="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden group">
+                <motion.div 
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    className="max-w-5xl mx-auto bg-[#161618] border border-[#FF5722]/20 rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                >
                     {/* Decoration */}
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 blur-[100px] rounded-full group-hover:scale-150 transition-transform duration-1000"></div>
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-[#FF5722]/10 blur-[100px] rounded-full group-hover:bg-[#FF5722]/20 transition-colors duration-1000"></div>
                     
-                    <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-8 uppercase leading-[0.9]">
-                        Sektörün En Şık Menü Sistemine <span className="text-amber-500">Hazır mısınız?</span>
+                    <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-8 uppercase leading-[1.1] relative z-10">
+                        Hâlâ Denetimden Mi <span className="text-[#FF5722]">Korkuyorsunuz?</span>
                     </h2>
-                    <p className="text-slate-400 text-lg md:text-xl font-medium mb-12 max-w-2xl mx-auto">
-                        Karmaşık donanımlara, yüksek aylık ücretlere son. Basit, güçlü ve tamamen size özel.
+                    <p className="text-[#a1a1aa] text-lg md:text-xl font-medium mb-12 max-w-2xl mx-auto relative z-10 drop-shadow-md">
+                        Ceza riskini ortadan kaldırın. Satışlarınızı premium bir görünümle artırın. Bugün ÜCRETSİZ başlayın.
                     </p>
                     
-                    <div className="flex flex-col items-center gap-6">
+                    <div className="flex flex-col items-center gap-6 relative z-10">
                         <button 
                             onClick={() => navigate('/admin')}
-                            className="px-12 py-6 bg-amber-500 text-black rounded-3xl font-black text-xl uppercase tracking-tighter hover:scale-105 transition-all shadow-2xl shadow-amber-500/20"
+                            className="w-full sm:w-auto px-12 py-6 bg-[#FF5722] text-black rounded-[2rem] font-black text-lg sm:text-xl uppercase tracking-tighter hover:scale-105 transition-all shadow-[0_0_40px_rgba(255,87,34,0.3)]"
                         >
-                            Hemen Ücretsiz Başla
+                            Hemen Ücretsiz Başla ve Yönetmeliğe Uyum Sağla
                         </button>
-                        <span className="text-slate-500 font-black uppercase tracking-widest text-xs">
-                            Kredi Kartı Gerekmez • Anında Kurulum
-                        </span>
                     </div>
-                </div>
+                </motion.div>
             </section>
 
             {/* Footer */}
-            <footer className="px-6 py-12 border-t border-slate-100">
+            <footer className="px-6 py-12 border-t border-white/5 bg-[#0a0a0b]">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div className="flex items-center gap-2">
-                        <Monitor size={16} className="text-amber-500" />
-                        <span className="font-black text-sm uppercase tracking-tighter">Döner Akış © 2026</span>
+                    <div className="flex flex-col items-center md:items-start gap-2">
+                        <div className="flex items-center gap-2">
+                             <Monitor size={16} className="text-[#FF5722]" />
+                             <span className="font-black text-sm uppercase tracking-tighter text-white">Döner Akış © 2026</span>
+                        </div>
+                        <span className="text-[#a1a1aa] text-[10px] font-bold tracking-widest uppercase">Dijital Menü Yönetim Sistemleri</span>
                     </div>
-                    <div className="flex gap-8 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                        <a href="#" className="hover:text-slate-900 transition-colors">Kullanım Koşulları</a>
-                        <a href="#" className="hover:text-slate-900 transition-colors">Gizlilik Politikası</a>
-                        <a href="#" className="hover:text-slate-900 transition-colors">Destek</a>
+                    <div className="flex flex-wrap justify-center gap-8 text-[10px] font-black uppercase tracking-widest text-[#a1a1aa]">
+                        <a href="#" className="hover:text-white transition-colors">Yönetmelik Detayları</a>
+                        <a href="#" className="hover:text-white transition-colors">Kullanım Koşulları</a>
+                        <a href="#" className="hover:text-white transition-colors">Gizlilik Politikası</a>
+                        <button onClick={() => navigate('/login')} className="hover:text-[#FF5722] transition-colors">Giriş Yap</button>
                     </div>
                 </div>
             </footer>
 
+            <style>{`
+                html { scroll-behavior: smooth; }
+            `}</style>
         </div>
     );
 }
