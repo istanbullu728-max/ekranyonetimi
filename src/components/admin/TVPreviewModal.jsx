@@ -180,9 +180,3 @@ export default function TVPreviewModal() {
         </div>
     );
 }
-
-const Check = ({ size, className }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <polyline points="20 6 9 17 4 12"></polyline>
-    </svg>
-);
