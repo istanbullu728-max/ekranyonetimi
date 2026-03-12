@@ -1,20 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useStore from '../../store/useStore';
 import { v4 as uuidv4 } from 'uuid';
 import { Plus, AlertCircle, ShoppingBag } from 'lucide-react';
 
-export default function ProductForm({ onSuccess }) {
+export default function ProductForm({ onSuccess, initialCategoryId = null }) {
     const { categories, addProduct } = useStore();
 
     const [formData, setFormData] = useState({
         name: '',
         description: '',
         price: '',
-        categoryId: categories[0]?.id || '',
+        categoryId: initialCategoryId || (categories[0]?.id || ''),
         available: true,
         isChefPick: false,
         isHot: false
     });
+
+    // Update categoryId if initialCategoryId prop changes
+    useEffect(() => {
+        if (initialCategoryId) {
+            setFormData(prev => ({ ...prev, categoryId: initialCategoryId }));
+        }
+    }, [initialCategoryId]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -66,6 +73,7 @@ export default function ProductForm({ onSuccess }) {
                             onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
                             className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-slate-900 focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all appearance-none cursor-pointer font-bold"
                         >
+                            <option value="" disabled>Kategori Seçin</option>
                             {categories.map(c => (
                                 <option key={c.id} value={c.id} className="bg-white">{c.name}</option>
                             ))}

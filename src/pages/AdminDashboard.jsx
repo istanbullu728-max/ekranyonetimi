@@ -12,6 +12,12 @@ export default function AdminDashboard() {
     const [isProductModalOpen, setIsProductModalOpen] = useState(false);
     const [isTVPreviewOpen, setIsTVPreviewOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [selectedCategoryIdForNewProduct, setSelectedCategoryIdForNewProduct] = useState(null);
+
+    const openProductModal = (categoryId = null) => {
+        setSelectedCategoryIdForNewProduct(categoryId);
+        setIsProductModalOpen(true);
+    };
 
     return (
         <div className="min-h-screen bg-[#f8f9fa] text-slate-800 flex flex-col md:flex-row font-sans">
@@ -101,7 +107,7 @@ export default function AdminDashboard() {
                         </button>
 
                         <button
-                            onClick={() => setIsProductModalOpen(true)}
+                            onClick={() => openProductModal()}
                             className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-black rounded-xl hover:bg-amber-400 transition-all font-bold shadow-lg shadow-amber-500/20 text-xs uppercase tracking-wider"
                         >
                             <Plus size={20} />
@@ -114,7 +120,9 @@ export default function AdminDashboard() {
                 <main className="flex-1 overflow-y-auto p-8 custom-scrollbar">
                     {activeTab === 'products' && (
                         <div className="max-w-6xl mx-auto">
-                            <ProductList onEditProduct={() => setIsProductModalOpen(true)} />
+                            <ProductList 
+                                onAddProductToCategory={(catId) => openProductModal(catId)} 
+                            />
                         </div>
                     )}
 
@@ -161,7 +169,10 @@ export default function AdminDashboard() {
                         >
                             <X size={24} />
                         </button>
-                        <ProductForm onSuccess={() => setIsProductModalOpen(false)} />
+                        <ProductForm 
+                            initialCategoryId={selectedCategoryIdForNewProduct} 
+                            onSuccess={() => setIsProductModalOpen(false)} 
+                        />
                     </div>
                 </div>
             )}
