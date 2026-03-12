@@ -5,9 +5,13 @@ import CenterColumn from '../components/display/CenterColumn';
 import RightColumn from '../components/display/RightColumn';
 import BackgroundFx from '../components/display/BackgroundFx';
 
+import { Settings, Maximize2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
 export default function CustomerDisplay() {
     const { products, categories, campaigns } = useStore();
     const [activeCampaign, setActiveCampaign] = useState(null);
+    const navigate = useNavigate();
 
     // Check for active campaigns based on current time
     useEffect(() => {
@@ -51,7 +55,7 @@ export default function CustomerDisplay() {
     }, []);
 
     return (
-        <div className="relative w-screen h-screen overflow-hidden bg-[#0d0d0d] text-white">
+        <div className="relative w-screen h-screen overflow-hidden bg-[#0d0d0d] text-white font-sans">
             <BackgroundFx />
 
             {/* 3-Column CSS Grid Layout */}
@@ -82,13 +86,25 @@ export default function CustomerDisplay() {
                 </div>
             </div>
 
-            {/* Hidden button for touch screens or folks who don't know the F key */}
-            <button
-                onClick={toggleFullScreen}
-                className="absolute bottom-4 right-4 z-50 text-white/10 hover:text-white/30 transition-colors"
-            >
-                [Fullscreen F]
-            </button>
+            {/* Subtle Controls Container */}
+            <div className="absolute bottom-4 right-4 z-50 flex items-center gap-3">
+                <button
+                    onClick={() => navigate('/admin')}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/20 hover:text-amber-500 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all text-xs uppercase tracking-wider font-semibold group"
+                >
+                    <Settings size={14} className="group-hover:rotate-90 transition-transform duration-500" />
+                    <span>Admin</span>
+                </button>
+
+                <button
+                    onClick={toggleFullScreen}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/20 hover:text-white/60 hover:bg-white/10 transition-all text-xs uppercase tracking-wider font-semibold"
+                    title="Toggle Fullscreen (F)"
+                >
+                    <Maximize2 size={14} />
+                    <span>Tam Ekran</span>
+                </button>
+            </div>
         </div>
     );
 }
