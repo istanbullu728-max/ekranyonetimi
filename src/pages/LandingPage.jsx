@@ -8,39 +8,39 @@ export default function LandingPage() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     return (
-        <div className="min-h-screen bg-[#0a0a0b] text-white font-sans selection:bg-[#FF5722]/30 selection:text-[#FF5722] overflow-x-hidden">
+        <div className="min-h-screen bg-[#FDFBF7] text-slate-900 font-sans selection:bg-[#FF5722]/20 selection:text-[#FF5722] overflow-x-hidden">
             
             {/* Legal Compliance Banner */}
-            <div className="bg-[#FF5722] text-black w-full py-2.5 px-4 text-center text-xs md:text-sm font-black uppercase tracking-widest flex items-center justify-center gap-3">
+            <div className="bg-[#FF5722] text-white w-full py-2.5 px-4 text-center text-xs md:text-sm font-black uppercase tracking-widest flex items-center justify-center gap-3 shadow-md">
                 <AlertTriangle size={16} className="animate-pulse" />
                 <span className="hidden sm:inline">📢 Yeni Yönetmeliğe %100 Uyum:</span> Kapıda ve Masada Fiyat Listesi Bulundurma Zorunluluğuna Dijital Çözüm!
             </div>
 
             {/* Navigation */}
-            <nav className="fixed top-[44px] sm:top-[44px] left-0 right-0 z-50 bg-[#0a0a0b]/80 backdrop-blur-xl border-b border-white/5">
+            <nav className="fixed top-[44px] sm:top-[44px] left-0 right-0 z-50 bg-[#FDFBF7]/90 backdrop-blur-xl border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                        <div className="w-10 h-10 bg-[#FF5722] rounded-xl flex items-center justify-center text-black shadow-lg shadow-[#FF5722]/20 group-hover:rotate-6 transition-transform">
+                        <div className="w-10 h-10 bg-[#FF5722] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#FF5722]/30 group-hover:rotate-6 transition-transform">
                             <Monitor size={20} className="font-bold" />
                         </div>
-                        <span className="text-xl font-black tracking-tighter text-white uppercase">Döner Akış <span className="text-[#FF5722]">.</span></span>
+                        <span className="text-xl font-black tracking-tighter text-slate-900 uppercase">Döner Akış <span className="text-[#FF5722]">.</span></span>
                     </div>
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-10">
-                        <a href="#features" className="text-sm font-black uppercase tracking-widest text-[#a1a1aa] hover:text-white transition-colors">Özellikler</a>
-                        <a href="#how-it-works" className="text-sm font-black uppercase tracking-widest text-[#a1a1aa] hover:text-white transition-colors">Nasıl Çalışır</a>
-                        <div className="h-6 w-px bg-white/10"></div>
+                        <a href="#features" className="text-sm font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">Özellikler</a>
+                        <a href="#how-it-works" className="text-sm font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">Nasıl Çalışır</a>
+                        <div className="h-6 w-px bg-slate-200"></div>
                         <button 
                             onClick={() => navigate('/login')}
-                            className="text-sm font-black uppercase tracking-widest text-white hover:bg-white/5 px-6 py-2.5 rounded-xl transition-all flex items-center gap-2"
+                            className="text-sm font-black uppercase tracking-widest text-slate-900 hover:bg-slate-100 px-6 py-2.5 rounded-xl transition-all flex items-center gap-2"
                         >
                             <LogIn size={18} />
                             Giriş Yap
                         </button>
                         <button 
                             onClick={() => navigate('/admin')}
-                            className="bg-[#FF5722] text-black px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e64a19] transition-all shadow-[0_0_20px_rgba(255,87,34,0.3)] flex items-center gap-2"
+                            className="bg-[#FF5722] text-white px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#e64a19] transition-all shadow-lg shadow-[#FF5722]/30 flex items-center gap-2"
                         >
                             Hemen Başla
                             <ArrowRight size={16} />
@@ -48,7 +48,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-white">
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-slate-900">
                         {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
                     </button>
                 </div>
@@ -60,19 +60,19 @@ export default function LandingPage() {
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
-                            className="md:hidden absolute top-20 left-0 right-0 bg-[#161618] border-b border-white/5 p-6 flex flex-col gap-4 shadow-2xl"
+                            className="md:hidden absolute top-20 left-0 right-0 bg-white border-b border-slate-200 p-6 flex flex-col gap-4 shadow-2xl"
                         >
-                            <a href="#features" onClick={() => setIsMenuOpen(false)} className="text-lg font-black uppercase tracking-widest p-4 bg-white/5 rounded-2xl text-white">Özellikler</a>
-                            <a href="#how-it-works" onClick={() => setIsMenuOpen(false)} className="text-lg font-black uppercase tracking-widest p-4 bg-white/5 rounded-2xl text-white">Nasıl Çalışır</a>
+                            <a href="#features" onClick={() => setIsMenuOpen(false)} className="text-lg font-black uppercase tracking-widest p-4 bg-slate-50 rounded-2xl text-slate-900">Özellikler</a>
+                            <a href="#how-it-works" onClick={() => setIsMenuOpen(false)} className="text-lg font-black uppercase tracking-widest p-4 bg-slate-50 rounded-2xl text-slate-900">Nasıl Çalışır</a>
                             <button 
                                 onClick={() => { setIsMenuOpen(false); navigate('/login'); }}
-                                className="w-full bg-white/5 p-4 rounded-2xl font-black uppercase tracking-widest text-left text-white"
+                                className="w-full bg-slate-50 p-4 rounded-2xl font-black uppercase tracking-widest text-left text-slate-900"
                             >
                                 Giriş Yap
                             </button>
                             <button 
                                 onClick={() => { setIsMenuOpen(false); navigate('/admin'); }}
-                                className="w-full bg-[#FF5722] p-4 rounded-2xl font-black text-black uppercase tracking-widest"
+                                className="w-full bg-[#FF5722] p-4 rounded-2xl font-black text-white uppercase tracking-widest shadow-lg shadow-[#FF5722]/20"
                             >
                                 Hemen Başla
                             </button>
@@ -88,17 +88,17 @@ export default function LandingPage() {
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="mb-8 px-5 py-2 border border-white/10 bg-white/5 backdrop-blur-md rounded-full flex items-center gap-2"
+                        className="mb-8 px-5 py-2 border border-[#FF5722]/20 bg-[#FF5722]/5 backdrop-blur-md rounded-full flex items-center gap-2"
                     >
                         <ShieldCheck size={14} className="text-[#FF5722]" />
-                        <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#a1a1aa]">1 Ocak 2024 Yönetmeliğine Uygundur</span>
+                        <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#FF5722]">1 Ocak 2024 Yönetmeliğine Uygundur</span>
                     </motion.div>
 
                     <motion.h1 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-5xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] max-w-5xl mb-8 uppercase"
+                        className="text-5xl sm:text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] max-w-5xl mb-8 uppercase"
                     >
                         Özel Cihaz Yok. <br/>
                         Kablo Yok. <br/>
@@ -109,9 +109,9 @@ export default function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-xl md:text-2xl text-[#a1a1aa] font-medium max-w-3xl mb-12 leading-relaxed"
+                        className="text-xl md:text-2xl text-slate-500 font-medium max-w-3xl mb-12 leading-relaxed"
                     >
-                        Mevcut herhangi bir ekranınızı saniyeler içinde <strong className="text-white">Akıllı Menüye</strong> dönüştürün. Yasal zorunlulukları tek tıkla halledin, tasarımla uğraşmayın.
+                        Mevcut herhangi bir ekranınızı saniyeler içinde <strong className="text-slate-900">Akıllı Menüye</strong> dönüştürün. Yasal zorunlulukları tek tıkla halledin, tasarımla uğraşmayın.
                     </motion.p>
 
                     <motion.div 
@@ -122,7 +122,7 @@ export default function LandingPage() {
                     >
                         <button 
                             onClick={() => navigate('/admin')}
-                            className="w-full sm:w-auto px-12 py-6 bg-[#FF5722] text-black rounded-[2rem] font-black text-base sm:text-lg uppercase tracking-widest hover:scale-105 transition-all shadow-[0_0_40px_rgba(255,87,34,0.4)] flex items-center justify-center gap-3 group"
+                            className="w-full sm:w-auto px-12 py-6 bg-[#FF5722] text-white rounded-[2rem] font-black text-base sm:text-lg uppercase tracking-widest hover:scale-105 transition-all shadow-[0_15px_30px_rgba(255,87,34,0.3)] flex items-center justify-center gap-3 group"
                         >
                             Ücretsiz Başla ve Yasaya Uyum Sağla
                             <ArrowRight className="group-hover:translate-x-2 transition-transform" />
@@ -133,7 +133,7 @@ export default function LandingPage() {
                          initial={{ opacity: 0 }}
                          animate={{ opacity: 1 }}
                          transition={{ delay: 0.5 }}
-                        className="mt-12 text-[#a1a1aa] font-black uppercase tracking-[0.2em] text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 opacity-60"
+                        className="mt-12 text-slate-400 font-black uppercase tracking-[0.2em] text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 opacity-80"
                     >
                         <span>Kurulum Ücreti Yok</span>
                         <span className="hidden sm:inline">•</span>
@@ -145,8 +145,8 @@ export default function LandingPage() {
 
                 {/* Hero Glow */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-full h-full max-w-[1000px] pointer-events-none">
-                    <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#FF5722]/20 blur-[150px] rounded-full mix-blend-screen mix-blend-screen"></div>
-                    <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-indigo-500/10 blur-[150px] rounded-full mix-blend-screen"></div>
+                    <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#FF5722]/10 blur-[150px] rounded-full mix-blend-multiply"></div>
+                    <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-amber-500/10 blur-[150px] rounded-full mix-blend-multiply"></div>
                 </div>
             </section>
 
@@ -157,16 +157,16 @@ export default function LandingPage() {
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
-                        className="bg-[#161618] border border-white/10 rounded-[2.5rem] p-10 md:p-16 flex flex-col md:flex-row items-center gap-12 shadow-2xl backdrop-blur-md relative overflow-hidden group"
+                        className="bg-white border border-slate-200 rounded-[2.5rem] p-10 md:p-16 flex flex-col md:flex-row items-center gap-12 shadow-xl backdrop-blur-md relative overflow-hidden group hover:shadow-2xl transition-shadow"
                      >
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF5722]/5 blur-[80px] rounded-full group-hover:bg-[#FF5722]/10 transition-colors"></div>
-                        <div className="w-24 h-24 bg-white/5 hidden md:flex rounded-3xl border border-white/10 items-center justify-center shrink-0">
+                        <div className="w-24 h-24 bg-[#FF5722]/10 hidden md:flex rounded-3xl border border-[#FF5722]/20 items-center justify-center shrink-0">
                             <ShieldCheck size={48} className="text-[#FF5722]" />
                         </div>
                         <div className="flex-1 text-center md:text-left">
-                            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">Resmi Gazete Uyumlu.</h2>
-                            <p className="text-[#a1a1aa] text-lg font-medium leading-relaxed">
-                                Kapıda ve masada fiyat listesi bulundurma yönetmeliği için kusursuz çözüm. Denetimlerden tam not alın. Yeni yasaya uygun fiyat listeleme sistemini hemen kurun, <strong className="text-white">ceza riskini ortadan kaldırın.</strong>
+                            <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter mb-4">Resmi Gazete Uyumlu.</h2>
+                            <p className="text-slate-500 text-lg font-medium leading-relaxed">
+                                Kapıda ve masada fiyat listesi bulundurma yönetmeliği için kusursuz çözüm. Denetimlerden tam not alın. Yeni yasaya uygun fiyat listeleme sistemini hemen kurun, <strong className="text-slate-900">ceza riskini ortadan kaldırın.</strong>
                             </p>
                         </div>
                      </motion.div>
@@ -176,10 +176,10 @@ export default function LandingPage() {
             {/* Hardware Agnostic Section */}
             <section id="features" className="py-24 px-6 relative">
                  <div className="max-w-7xl mx-auto text-center mb-20">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 drop-shadow-lg">
-                        Sınırları Kaldırın. <br/><span className="text-[#a1a1aa]">Donanıma Bağlı Kalmayın.</span>
+                    <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase mb-6 drop-shadow-sm">
+                        Sınırları Kaldırın. <br/><span className="text-slate-400">Donanıma Bağlı Kalmayın.</span>
                     </h2>
-                    <p className="text-xl text-[#a1a1aa] max-w-3xl mx-auto font-medium">
+                    <p className="text-xl text-slate-500 max-w-3xl mx-auto font-medium">
                         Marka veya model fark etmez. Tarayıcısı olan her ekran artık sizin profesyonel vitrininiz.
                     </p>
                  </div>
@@ -197,27 +197,27 @@ export default function LandingPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            className="bg-[#161618] border border-white/5 rounded-3xl p-8 hover:bg-white/5 hover:border-white/10 transition-all cursor-pointer"
+                            className="bg-white border border-slate-200 rounded-3xl p-8 hover:bg-slate-50 hover:shadow-xl transition-all cursor-pointer group"
                           >
-                            <item.icon size={32} className="text-[#FF5722] mb-6" />
-                            <h3 className="text-xl font-black uppercase tracking-widest mb-3">{item.title}</h3>
-                            <p className="text-[#a1a1aa] text-sm font-medium leading-relaxed">{item.desc}</p>
+                            <item.icon size={32} className="text-[#FF5722] mb-6 group-hover:scale-110 transition-transform" />
+                            <h3 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-3">{item.title}</h3>
+                            <p className="text-slate-500 text-sm font-medium leading-relaxed">{item.desc}</p>
                           </motion.div>
                      ))}
                  </div>
             </section>
 
             {/* Smart Auto Slide Highlight */}
-            <section className="py-24 px-6 relative bg-gradient-to-b from-transparent to-[#161618]/50">
+            <section className="py-24 px-6 relative bg-gradient-to-b from-transparent to-slate-50">
                  <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
                      <div className="flex-1 md:pr-12">
                          <div className="w-16 h-16 bg-[#FF5722]/10 rounded-2xl flex items-center justify-center mb-8 border border-[#FF5722]/20">
                              <Menu size={32} className="text-[#FF5722]" />
                          </div>
-                         <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6 leading-tight">
+                         <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter mb-6 leading-tight">
                              Akıllı <br/>Sayfalama 
                          </h2>
-                         <p className="text-[#a1a1aa] text-lg font-medium leading-relaxed mb-8">
+                         <p className="text-slate-500 text-lg font-medium leading-relaxed mb-8">
                             Ürünleriniz ekrana sığmazsa diye dert etmeyin. Algoritmamız menünüzü kategori bazlı otomatik böler ve belirlediğiniz sürelerde (örn: 8 saniye) şık, profesyonel geçişlerle müşterilerinize sunar.
                          </p>
                          <button onClick={() => navigate('/display')} className="text-[#FF5722] font-black uppercase tracking-widest text-sm flex items-center gap-2 hover:gap-4 transition-all group">
@@ -226,14 +226,14 @@ export default function LandingPage() {
                      </div>
                      <div className="flex-1 w-full relative">
                          {/* Abstract UI Representation */}
-                         <div className="bg-[#0a0a0b] border border-white/10 rounded-[2.5rem] p-6 shadow-2xl relative overflow-hidden aspect-video mockup-container">
-                              <div className="h-4 w-24 bg-[#FF5722] rounded-full mb-6"></div>
-                              <div className="space-y-4">
-                                  <div className="flex justify-between items-center"><div className="w-1/2 h-3 bg-white/20 rounded-full"></div><div className="w-10 h-4 bg-[#FF5722]/50 rounded-full"></div></div>
-                                  <div className="flex justify-between items-center"><div className="w-2/3 h-3 bg-white/20 rounded-full"></div><div className="w-12 h-4 bg-[#FF5722]/50 rounded-full"></div></div>
-                                  <div className="flex justify-between items-center"><div className="w-1/3 h-3 bg-white/20 rounded-full"></div><div className="w-8 h-4 bg-[#FF5722]/50 rounded-full"></div></div>
+                         <div className="bg-white border border-slate-200 rounded-[2.5rem] p-6 shadow-2xl relative overflow-hidden aspect-video mockup-container">
+                              <div className="h-4 w-24 bg-[#FF5722] rounded-full mb-6 relative z-10"></div>
+                              <div className="space-y-4 relative z-10">
+                                  <div className="flex justify-between items-center"><div className="w-1/2 h-3 bg-slate-200 rounded-full"></div><div className="w-10 h-4 bg-[#FF5722]/20 rounded-full"></div></div>
+                                  <div className="flex justify-between items-center"><div className="w-2/3 h-3 bg-slate-200 rounded-full"></div><div className="w-12 h-4 bg-[#FF5722]/20 rounded-full"></div></div>
+                                  <div className="flex justify-between items-center"><div className="w-1/3 h-3 bg-slate-200 rounded-full"></div><div className="w-8 h-4 bg-[#FF5722]/20 rounded-full"></div></div>
                               </div>
-                              <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/5">
+                              <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-100 z-10">
                                   <motion.div 
                                     initial={{ width: "0%" }}
                                     animate={{ width: "100%" }}
@@ -241,6 +241,7 @@ export default function LandingPage() {
                                     className="h-full bg-[#FF5722]"
                                   ></motion.div>
                               </div>
+                              <div className="absolute inset-0 bg-gradient-to-tr from-[#FF5722]/5 to-transparent blur-xl"></div>
                          </div>
                      </div>
                  </div>
@@ -250,13 +251,13 @@ export default function LandingPage() {
             <section id="how-it-works" className="py-32 px-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-24">
-                        <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4">Aylarca Değil, <span className="text-[#FF5722]">Dakikalar İçinde</span> Sahnede.</h2>
-                        <p className="text-[#a1a1aa] text-lg font-medium">3 adımlık sihirli kurulum ile IT ekibine ihtiyacınız yok.</p>
+                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter uppercase mb-4">Aylarca Değil, <span className="text-[#FF5722]">Dakikalar İçinde</span> Sahnede.</h2>
+                        <p className="text-slate-500 text-lg font-medium">3 adımlık sihirli kurulum ile IT ekibine ihtiyacınız yok.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
                         {/* Connecting Line */}
-                        <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                        <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
 
                         {[
                             { step: "1", title: "Listeni Oluştur", desc: "Ürün isimlerini ve fiyatlarını admin panelinden hızlıca girin. Saniyeler sürer." },
@@ -271,39 +272,39 @@ export default function LandingPage() {
                                 transition={{ delay: i * 0.2 }}
                                 className="relative flex flex-col items-center text-center"
                              >
-                                 <div className="w-20 h-20 bg-[#161618] border border-[#FF5722]/30 rounded-full flex items-center justify-center text-3xl font-black text-[#FF5722] shadow-[0_0_30px_rgba(255,87,34,0.15)] mb-8 z-10">
+                                 <div className="w-20 h-20 bg-white border-2 border-[#FF5722]/30 rounded-full flex items-center justify-center text-3xl font-black text-[#FF5722] shadow-lg shadow-[#FF5722]/10 mb-8 z-10">
                                      {item.step}
                                  </div>
-                                 <h3 className="text-2xl font-black uppercase tracking-widest mb-4">{item.title}</h3>
-                                 <p className="text-[#a1a1aa] leading-relaxed font-medium">{item.desc}</p>
+                                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-widest mb-4">{item.title}</h3>
+                                 <p className="text-slate-500 leading-relaxed font-medium">{item.desc}</p>
                              </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA Full Width */}
+            {/* CTA Full Width (Kept Dark for Contrast) */}
             <section className="px-6 py-20 pb-40">
                 <motion.div 
                     initial={{ scale: 0.95, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true }}
-                    className="max-w-5xl mx-auto bg-[#161618] border border-[#FF5722]/20 rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                    className="max-w-5xl mx-auto bg-slate-900 border border-slate-800 rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden group shadow-2xl shadow-slate-900/40"
                 >
                     {/* Decoration */}
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-[#FF5722]/10 blur-[100px] rounded-full group-hover:bg-[#FF5722]/20 transition-colors duration-1000"></div>
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-[#FF5722]/20 blur-[100px] rounded-full group-hover:bg-[#FF5722]/30 transition-colors duration-1000"></div>
                     
                     <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-8 uppercase leading-[1.1] relative z-10">
                         Hâlâ Denetimden Mi <span className="text-[#FF5722]">Korkuyorsunuz?</span>
                     </h2>
-                    <p className="text-[#a1a1aa] text-lg md:text-xl font-medium mb-12 max-w-2xl mx-auto relative z-10 drop-shadow-md">
+                    <p className="text-slate-400 text-lg md:text-xl font-medium mb-12 max-w-2xl mx-auto relative z-10 drop-shadow-md">
                         Ceza riskini ortadan kaldırın. Satışlarınızı premium bir görünümle artırın. Bugün ÜCRETSİZ başlayın.
                     </p>
                     
                     <div className="flex flex-col items-center gap-6 relative z-10">
                         <button 
                             onClick={() => navigate('/admin')}
-                            className="w-full sm:w-auto px-12 py-6 bg-[#FF5722] text-black rounded-[2rem] font-black text-lg sm:text-xl uppercase tracking-tighter hover:scale-105 transition-all shadow-[0_0_40px_rgba(255,87,34,0.3)]"
+                            className="w-full sm:w-auto px-12 py-6 bg-[#FF5722] text-white rounded-[2rem] font-black text-lg sm:text-xl uppercase tracking-tighter hover:scale-105 transition-all shadow-[0_15px_30px_rgba(255,87,34,0.3)] border border-[#FF5722]/50"
                         >
                             Hemen Ücretsiz Başla ve Yönetmeliğe Uyum Sağla
                         </button>
@@ -312,19 +313,19 @@ export default function LandingPage() {
             </section>
 
             {/* Footer */}
-            <footer className="px-6 py-12 border-t border-white/5 bg-[#0a0a0b]">
+            <footer className="px-6 py-12 border-t border-slate-200 bg-white">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="flex flex-col items-center md:items-start gap-2">
                         <div className="flex items-center gap-2">
                              <Monitor size={16} className="text-[#FF5722]" />
-                             <span className="font-black text-sm uppercase tracking-tighter text-white">Döner Akış © 2026</span>
+                             <span className="font-black text-sm uppercase tracking-tighter text-slate-900">Döner Akış © 2026</span>
                         </div>
-                        <span className="text-[#a1a1aa] text-[10px] font-bold tracking-widest uppercase">Dijital Menü Yönetim Sistemleri</span>
+                        <span className="text-slate-400 text-[10px] font-bold tracking-widest uppercase">Dijital Menü Yönetim Sistemleri</span>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-8 text-[10px] font-black uppercase tracking-widest text-[#a1a1aa]">
-                        <a href="#" className="hover:text-white transition-colors">Yönetmelik Detayları</a>
-                        <a href="#" className="hover:text-white transition-colors">Kullanım Koşulları</a>
-                        <a href="#" className="hover:text-white transition-colors">Gizlilik Politikası</a>
+                    <div className="flex flex-wrap justify-center gap-8 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                        <a href="#" className="hover:text-slate-900 transition-colors">Yönetmelik Detayları</a>
+                        <a href="#" className="hover:text-slate-900 transition-colors">Kullanım Koşulları</a>
+                        <a href="#" className="hover:text-slate-900 transition-colors">Gizlilik Politikası</a>
                         <button onClick={() => navigate('/login')} className="hover:text-[#FF5722] transition-colors">Giriş Yap</button>
                     </div>
                 </div>
