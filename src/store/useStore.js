@@ -70,7 +70,19 @@ const useStore = create(
             })),
 
             hasHydrated: false,
-            setHasHydrated: (val) => set({ hasHydrated: val })
+            setHasHydrated: (val) => set({ hasHydrated: val }),
+
+            syncState: (data) => {
+                if (!data) return;
+                set((state) => ({
+                    ...state,
+                    categories: data.categories || state.categories,
+                    products: data.products || state.products,
+                    campaigns: data.campaigns || state.campaigns,
+                    showcaseImages: data.showcaseImages || state.showcaseImages,
+                    settings: data.settings || state.settings
+                }));
+            }
         }),
         {
             name: 'doner-signage-storage',

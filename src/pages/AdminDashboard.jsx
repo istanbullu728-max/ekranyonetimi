@@ -7,8 +7,10 @@ import ShowcaseManager from '../components/admin/ShowcaseManager';
 import TVPreviewModal from '../components/admin/TVPreviewModal';
 import { LayoutDashboard, Megaphone, Settings, Plus, Monitor, X, Menu, Image as ImageIcon, FolderPlus } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
+import { useAutoSyncAdmin } from '../hooks/useAutoSync';
 
 export default function AdminDashboard() {
+    useAutoSyncAdmin(); // Otomatik, gizli arka plan senkronizasyonu
     const [activeTab, setActiveTab] = useState('products');
     const [isProductModalOpen, setIsProductModalOpen] = useState(false);
     const [isTVPreviewOpen, setIsTVPreviewOpen] = useState(false);

@@ -2,11 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import useStore from '../store/useStore';
 import { Sparkles, Flame, Settings, Maximize2, LayoutDashboard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAutoSyncDisplay } from '../hooks/useAutoSync';
 
 const ITEMS_PER_PAGE = 10;
 const SLIDE_DURATION = 8000; // 8 seconds
 
 export default function CustomerDisplay() {
+    useAutoSyncDisplay(); // Otomatik, gizli arka plan senkronizasyonu
     const products = useStore((state) => state.products || []);
     const categories = useStore((state) => state.categories || []);
     const campaigns = useStore((state) => state.campaigns || []);
