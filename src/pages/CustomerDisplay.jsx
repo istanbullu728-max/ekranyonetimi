@@ -174,12 +174,12 @@ export default function CustomerDisplay() {
             </div>
 
             {/* Admin Login Button (Bottom Right) */}
-            <div className="absolute bottom-4 right-4 z-50 opacity-10 hover:opacity-100 transition-opacity">
+            <div className="absolute bottom-6 right-6 z-50 opacity-60 hover:opacity-100 transition-opacity">
                 <button
                     onClick={() => navigate('/admin')}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/20 border border-white/10 text-white/40 hover:text-amber-500 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all text-[10px] uppercase tracking-wider font-black group"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-black/60 border border-white/20 text-white hover:text-amber-500 hover:bg-black/80 hover:border-amber-500/50 transition-all text-xs uppercase tracking-widest font-black group shadow-2xl"
                 >
-                    <Settings size={14} className="group-hover:rotate-90 transition-transform duration-500" />
+                    <Settings size={16} className="group-hover:rotate-90 transition-transform duration-500" />
                     <span>Yönetici Girişi</span>
                 </button>
             </div>
