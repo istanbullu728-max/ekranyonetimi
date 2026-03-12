@@ -5,7 +5,8 @@ import ProductForm from '../components/admin/ProductForm';
 import CampaignManager from '../components/admin/CampaignManager';
 import ShowcaseManager from '../components/admin/ShowcaseManager';
 import TVPreviewModal from '../components/admin/TVPreviewModal';
-import { LayoutDashboard, Megaphone, Settings, Plus, Monitor, X, Menu, Image as ImageIcon } from 'lucide-react';
+import { LayoutDashboard, Megaphone, Settings, Plus, Monitor, X, Menu, Image as ImageIcon, FolderPlus } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState('products');
@@ -13,6 +14,18 @@ export default function AdminDashboard() {
     const [isTVPreviewOpen, setIsTVPreviewOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [selectedCategoryIdForNewProduct, setSelectedCategoryIdForNewProduct] = useState(null);
+
+    const { addCategory } = useStore();
+
+    const handleAddCategory = () => {
+        const catName = window.prompt("Yeni kategori adını girin (Örn: Tatlılar):");
+        if (catName && catName.trim()) {
+            addCategory({
+                id: uuidv4(),
+                name: catName.trim()
+            });
+        }
+    };
 
     const openProductModal = (categoryId = null) => {
         setSelectedCategoryIdForNewProduct(categoryId);
@@ -107,10 +120,18 @@ export default function AdminDashboard() {
                         </button>
 
                         <button
-                            onClick={() => openProductModal()}
-                            className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-black rounded-xl hover:bg-amber-400 transition-all font-bold shadow-lg shadow-amber-500/20 text-xs uppercase tracking-wider"
+                            onClick={handleAddCategory}
+                            className="flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-xl hover:bg-slate-700 transition-colors font-bold text-xs uppercase tracking-wider shadow-md group"
                         >
-                            <Plus size={20} />
+                            <FolderPlus size={18} className="group-hover:scale-110 transition-transform" />
+                            <span className="hidden sm:inline">Kategori Ekle</span>
+                        </button>
+
+                        <button
+                            onClick={() => openProductModal()}
+                            className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-black rounded-xl hover:bg-amber-400 transition-all font-bold shadow-lg shadow-amber-500/20 text-xs uppercase tracking-wider group"
+                        >
+                            <Plus size={20} className="group-hover:scale-110 transition-transform" />
                             <span className="hidden sm:inline">Yeni Ürün</span>
                         </button>
                     </div>

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import useStore from '../../store/useStore';
-import { Pencil, Trash2, PowerOff, Power, Check, X, Tag, Plus, FolderPlus } from 'lucide-react';
-import { v4 as uuidv4 } from 'uuid';
+import { Pencil, Trash2, PowerOff, Power, Check, X, Tag, Plus } from 'lucide-react';
 
 export default function ProductList({ onAddProductToCategory }) {
-    const { products, categories, updateProduct, deleteProduct, addCategory } = useStore();
+    const { products, categories, updateProduct, deleteProduct } = useStore();
     const [editingPriceId, setEditingPriceId] = useState(null);
     const [tempPrice, setTempPrice] = useState('');
 
@@ -31,29 +30,8 @@ export default function ProductList({ onAddProductToCategory }) {
         setEditingPriceId(null);
     };
 
-    const handleAddCategory = () => {
-        const catName = window.prompt("Yeni kategori adını girin (Örn: Tatlılar):");
-        if (catName && catName.trim()) {
-            addCategory({
-                id: uuidv4(),
-                name: catName.trim()
-            });
-        }
-    };
-
     return (
-        <div className="flex flex-col gap-12 pb-20">
-            {/* Header / Add Category */}
-            <div className="flex justify-end pr-4">
-                <button 
-                    onClick={handleAddCategory}
-                    className="flex items-center gap-2 bg-slate-800 text-white px-5 py-2.5 rounded-xl hover:bg-slate-700 transition-colors font-bold text-xs uppercase tracking-widest shadow-md"
-                >
-                    <FolderPlus size={18} />
-                    Kategori Ekle
-                </button>
-            </div>
-
+        <div className="flex flex-col gap-12 pb-20 pt-4">
             {categories.map((category) => {
                 const catProducts = products.filter(p => p.categoryId === category.id);
                 // Even if length is 0, we still want to show the category block now so we can add to it.
