@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import useStore from '../../store/useStore';
 import { v4 as uuidv4 } from 'uuid';
-import { Upload, Plus, AlertCircle } from 'lucide-react';
+import { Upload, Plus, AlertCircle, ShoppingBag, X } from 'lucide-react';
 
-export default function ProductForm() {
+export default function ProductForm({ onSuccess }) {
     const { categories, addProduct } = useStore();
 
     const [formData, setFormData] = useState({
@@ -43,153 +43,161 @@ export default function ProductForm() {
             price: Number(formData.price)
         });
 
-        // Reset form
-        setFormData({
-            name: '',
-            description: '',
-            price: '',
-            categoryId: formData.categoryId, // Keep last selected category
-            image: '',
-            available: true,
-            isChefPick: false,
-            isHot: false
-        });
+        if (onSuccess) onSuccess();
     };
 
     return (
-        <div className="bg-[#1f1f1f] border border-white/10 rounded-xl p-6 sticky top-6">
-            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <Plus className="text-amber-500" />
-                Yeni Ürün Ekle
-            </h3>
+        <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-4 mb-2">
+                <div className="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500">
+                    <ShoppingBag size={24} />
+                </div>
+                <div>
+                    <h3 className="text-2xl font-bold text-white">Yeni Ürün Ekle</h3>
+                    <p className="text-gray-500 text-sm">Ürün detaylarını doldurup TV'ye yansıtın.</p>
+                </div>
+            </div>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
 
                 {/* Name */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Ürün Adı *</label>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-400 ml-1">Ürün Adı *</label>
                     <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-amber-500 transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all placeholder:text-gray-700"
                         placeholder="Örn: Et Döner Dürüm"
                     />
                 </div>
 
                 {/* Category & Price Row */}
-                <div className="flex gap-4">
-                    <div className="flex-1">
-                        <label className="block text-sm font-medium text-gray-400 mb-1">Kategori *</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400 ml-1">Kategori *</label>
                         <select
                             required
                             value={formData.categoryId}
                             onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-amber-500 transition-colors"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all appearance-none cursor-pointer"
                         >
                             {categories.map(c => (
-                                <option key={c.id} value={c.id}>{c.name}</option>
+                                <option key={c.id} value={c.id} className="bg-[#18181b]">{c.name}</option>
                             ))}
                         </select>
                     </div>
-                    <div className="w-1/3">
-                        <label className="block text-sm font-medium text-gray-400 mb-1">Fiyat (₺) *</label>
-                        <input
-                            type="number"
-                            required
-                            min="0"
-                            step="0.01"
-                            value={formData.price}
-                            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-amber-500 transition-colors"
-                            placeholder="0.00"
-                        />
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400 ml-1">Fiyat (₺) *</label>
+                        <div className="relative">
+                            <span className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₺</span>
+                            <input
+                                type="number"
+                                required
+                                min="0" 
+                                step="0.01"
+                                value={formData.price}
+                                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-10 pr-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all placeholder:text-gray-700 font-mono"
+                                placeholder="0.00"
+                            />
+                        </div>
                     </div>
                 </div>
 
                 {/* Description */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Açıklama</label>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-400 ml-1">Açıklama</label>
                     <textarea
-                        rows="2"
+                        rows="3"
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-amber-500 transition-colors resize-none"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all resize-none placeholder:text-gray-700"
                         placeholder="İsteğe bağlı kısa açıklama..."
                     ></textarea>
                 </div>
 
-                {/* Details Toggles */}
-                <div className="flex flex-col gap-3 py-3 border-y border-white/5">
-                    <label className="flex items-center justify-between cursor-pointer group">
-                        <span className="text-sm text-gray-300 group-hover:text-white transition-colors">Ana Ekranda Büyük Göster (Şefin Seçimi)</span>
-                        <input
-                            type="checkbox"
-                            checked={formData.isChefPick}
-                            onChange={(e) => setFormData({ ...formData, isChefPick: e.target.checked })}
-                            className="w-4 h-4 rounded border-gray-600 text-amber-500 focus:ring-amber-500 bg-black/50"
-                        />
+                {/* Toggles Container */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5 bg-white/5 rounded-2xl border border-white/5">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                        <div className="relative">
+                            <input
+                                type="checkbox"
+                                checked={formData.isChefPick}
+                                onChange={(e) => setFormData({ ...formData, isChefPick: e.target.checked })}
+                                className="sr-only"
+                            />
+                            <div className={`w-10 h-6 rounded-full transition-colors ${formData.isChefPick ? 'bg-amber-500' : 'bg-gray-700'}`}></div>
+                            <div className={`absolute left-1 top-1 w-4 h-4 rounded-full bg-white transition-transform ${formData.isChefPick ? 'translate-x-4' : ''}`}></div>
+                        </div>
+                        <span className="text-sm text-gray-300 group-hover:text-white transition-colors">Şefin Seçimi</span>
                     </label>
 
-                    <label className="flex items-center justify-between cursor-pointer group">
-                        <span className="text-sm text-gray-300 group-hover:text-white transition-colors">"Sıcak ve Taze" Rozeti Ekle</span>
-                        <input
-                            type="checkbox"
-                            checked={formData.isHot}
-                            onChange={(e) => setFormData({ ...formData, isHot: e.target.checked })}
-                            className="w-4 h-4 rounded border-gray-600 text-amber-500 focus:ring-amber-500 bg-black/50"
-                        />
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                        <div className="relative">
+                            <input
+                                type="checkbox"
+                                checked={formData.isHot}
+                                onChange={(e) => setFormData({ ...formData, isHot: e.target.checked })}
+                                className="sr-only"
+                            />
+                            <div className={`w-10 h-6 rounded-full transition-colors ${formData.isHot ? 'bg-red-500' : 'bg-gray-700'}`}></div>
+                            <div className={`absolute left-1 top-1 w-4 h-4 rounded-full bg-white transition-transform ${formData.isHot ? 'translate-x-4' : ''}`}></div>
+                        </div>
+                        <span className="text-sm text-gray-300 group-hover:text-white transition-colors">Sıcak & Taze</span>
                     </label>
                 </div>
 
                 {/* Image Upload */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Ürün Görseli</label>
-
-                    <div className="relative border-2 border-dashed border-white/20 rounded-xl overflow-hidden group hover:border-amber-500/50 transition-colors bg-black/30">
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-400 ml-1">Ürün Görseli</label>
+                    <div className="relative border-2 border-dashed border-white/10 rounded-3xl overflow-hidden group hover:border-amber-500/30 transition-all bg-white/5 aspect-video flex flex-col items-center justify-center">
                         {formData.image ? (
-                            <div className="relative w-full h-40">
+                            <div className="relative w-full h-full">
                                 <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span className="text-white text-sm font-medium flex items-center gap-2">
-                                        <Upload size={16} /> Resmi Değiştir
-                                    </span>
+                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setFormData({...formData, image: ''})}
+                                        className="p-3 bg-red-500 rounded-full text-white shadow-xl hover:scale-110 transition-transform"
+                                    >
+                                        <X size={20} />
+                                    </button>
                                 </div>
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
-                                <Upload className="w-8 h-8 text-gray-500 mb-2 group-hover:text-amber-500 transition-colors" />
-                                <p className="text-sm text-gray-400 mb-1">Görsel yüklemek için tıklayın</p>
-                                <p className="text-xs text-gray-600">Max 2MB, JPG/PNG</p>
+                            <div className="p-8 text-center">
+                                <Upload className="w-12 h-12 text-gray-600 mb-4 mx-auto group-hover:text-amber-500 group-hover:scale-110 transition-all" />
+                                <p className="text-sm text-gray-400">Görsel seçmek için tıklayın</p>
+                                <p className="text-xs text-gray-600 mt-2">Max 2MB, JPG/PNG</p>
                             </div>
                         )}
-
                         <input
                             type="file"
                             accept="image/*"
                             onChange={handleImageUpload}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            className={`absolute inset-0 w-full h-full opacity-0 cursor-pointer ${formData.image ? 'hidden' : ''}`}
                         />
                     </div>
                 </div>
 
-                {/* Warning about real-time sync */}
-                <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 flex gap-3 text-amber-500/80 mt-2">
-                    <AlertCircle size={18} className="shrink-0 mt-0.5" />
-                    <p className="text-xs leading-relaxed">
-                        Eklediğiniz ürün anında müşteri ekranlarına (TV) yansıyacaktır. Lütfen görsel kalitesine dikkat ediniz.
+                {/* Info Box */}
+                <div className="bg-amber-500/5 border border-amber-500/10 rounded-2xl p-4 flex gap-4">
+                    <AlertCircle size={20} className="text-amber-500 shrink-0 mt-0.5" />
+                    <p className="text-xs text-amber-500/70 leading-relaxed">
+                        Ürün eklendiği anda TV simülasyonunda ve mağaza ekranlarında canlı olarak güncellenecektir.
                     </p>
                 </div>
 
-                {/* Submit */}
+                {/* Submit Button */}
                 <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 rounded-lg shadow-lg shadow-amber-900/20 transition-all active:scale-[0.98] mt-2"
+                    className="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 rounded-2xl shadow-xl shadow-amber-500/10 transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-lg"
                 >
-                    Ürünü Ekle ve Yansıt
+                    <Plus size={24} />
+                    Kaydet ve Yayınla
                 </button>
-
             </form>
         </div>
     );
