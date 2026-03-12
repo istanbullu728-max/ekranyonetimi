@@ -152,7 +152,11 @@ export default function TVPreviewModal() {
                             </h3>
                         </div>
                     </div>
-                ))}
+                {/* Carousel Indicators */}
+                <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
+                    {showcaseImages.map((_, idx) => (
+                        <div 
+                            key={idx} 
                             className={`h-1 rounded-full transition-all duration-500 ${idx === currentSlide ? 'w-8 bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'w-2 bg-white/20'}`}
                         ></div>
                     ))}
