@@ -26,10 +26,26 @@ function App() {
       }
     };
 
-    // Subscribing to zustand changes to broadcast them
+    // Subscribing to zustand changes to broadcast them (Sync ONLY data)
     const unsubscribe = useStore.subscribe((state, prevState) => {
-      if (JSON.stringify(state) !== JSON.stringify(prevState)) {
-        bc.postMessage({ type: 'SYNC_STATE', payload: state });
+      // Create data-only snapshot for broadcast
+      const snapshot = {
+        categories: state.categories,
+        products: state.products,
+        campaigns: state.campaigns,
+        showcaseImages: state.showcaseImages,
+        settings: state.settings
+      };
+      const prevSnapshot = {
+        categories: prevState.categories,
+        products: prevState.products,
+        campaigns: prevState.campaigns,
+        showcaseImages: prevState.showcaseImages,
+        settings: prevState.settings
+      };
+
+      if (JSON.stringify(snapshot) !== JSON.stringify(prevSnapshot)) {
+        bc.postMessage({ type: 'SYNC_STATE', payload: snapshot });
       }
     });
 

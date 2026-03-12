@@ -48,7 +48,14 @@ const useStore = create(
             })),
 
             // Synchronize state across tabs (Customer Display <-> Admin)
-            syncState: (newState) => set(() => newState),
+            syncState: (data) => set((state) => ({
+                ...state,
+                categories: data.categories || state.categories,
+                products: data.products || state.products,
+                campaigns: data.campaigns || state.campaigns,
+                showcaseImages: data.showcaseImages || state.showcaseImages,
+                settings: data.settings || state.settings
+            })),
         }),
         {
             name: 'doner-signage-storage',

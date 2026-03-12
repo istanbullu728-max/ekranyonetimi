@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import useStore from '../store/useStore';
-import { Sparkles, Flame, Settings, Maximize2 } from 'lucide-react';
+import { Sparkles, Flame, Settings, Maximize2, LayoutDashboard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 10;
@@ -100,60 +100,68 @@ export default function CustomerDisplay() {
 
                 {/* Animated Product List */}
                 <div className="flex-1 px-12 py-4 relative">
-                    <div 
-                        key={currentMenuPage} 
-                        className="flex flex-col gap-6 animate-in fade-in duration-1000 slide-in-from-bottom-4"
-                    >
-                        {currentPageItems.map(product => {
-                            const category = categories.find(c => c.id === product.categoryId);
-                            let displayPrice = product.price;
-                            const hasDiscount = activeCampaign && 
-                                (!activeCampaign.targetCategory || activeCampaign.targetCategory === product.categoryId);
-                            
-                            if (hasDiscount) {
-                                displayPrice = product.price * (1 - activeCampaign.discountPercent / 100);
-                            }
+                    {currentPageItems.length > 0 ? (
+                        <div 
+                            key={currentMenuPage} 
+                            className="flex flex-col gap-6 animate-in fade-in duration-1000 slide-in-from-bottom-4"
+                        >
+                            {currentPageItems.map(product => {
+                                if (!product) return null;
+                                const category = categories.find(c => c.id === product.categoryId);
+                                let displayPrice = Number(product.price) || 0;
+                                const hasDiscount = activeCampaign && 
+                                    (!activeCampaign.targetCategory || activeCampaign.targetCategory === product.categoryId);
+                                
+                                if (hasDiscount) {
+                                    displayPrice = displayPrice * (1 - (activeCampaign.discountPercent || 0) / 100);
+                                }
 
-                            return (
-                                <div key={product.id} className="flex flex-col gap-1">
-                                    <div className="flex items-end gap-4 group">
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-3xl font-black tracking-tight text-slate-800 uppercase">
-                                                {product.name}
-                                            </span>
-                                            {product.isHot && <Flame size={20} className="text-red-500 fill-red-500" />}
-                                            {product.isChefPick && <Sparkles size={20} className="text-amber-500 fill-amber-500 shadow-sm" />}
+                                return (
+                                    <div key={product.id} className="flex flex-col gap-1">
+                                        <div className="flex items-end gap-4 group">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-3xl font-black tracking-tight text-slate-800 uppercase">
+                                                    {product.name}
+                                                </span>
+                                                {product.isHot && <Flame size={20} className="text-red-500 fill-red-500" />}
+                                                {product.isChefPick && <Sparkles size={20} className="text-amber-500 fill-amber-500" />}
+                                            </div>
+                                            
+                                            {/* Dynamic Dots */}
+                                            <div className="flex-1 border-b-2 border-dotted border-slate-200 mb-2 min-w-[20px]"></div>
+                                            
+                                            <div className="flex items-center gap-3">
+                                                {hasDiscount && (
+                                                    <span className="text-xl text-slate-300 line-through font-bold">
+                                                        {(Number(product.price) || 0).toFixed(0)}₺
+                                                    </span>
+                                                )}
+                                                <span className={`text-5xl font-black ${hasDiscount ? 'text-amber-500' : 'text-slate-900'}`}>
+                                                    {displayPrice.toFixed(0)}
+                                                    <span className="text-xl ml-1 text-slate-400 font-bold">₺</span>
+                                                </span>
+                                            </div>
                                         </div>
-                                        
-                                        {/* Dynamic Dots */}
-                                        <div className="flex-1 border-b-2 border-dotted border-slate-200 mb-2 min-w-[20px]"></div>
-                                        
-                                        <div className="flex items-center gap-3">
-                                            {hasDiscount && (
-                                                <span className="text-xl text-slate-300 line-through font-bold">
-                                                    {product.price.toFixed(0)}₺
+                                        <div className="flex justify-between items-center pr-2">
+                                            <span className="text-sm text-slate-400 italic font-bold">
+                                                {product.description || 'Hatay mutfağının seçkin lezzeti, taze malzemelerle.'}
+                                            </span>
+                                            {category && (
+                                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300 border border-slate-100 px-2 py-0.5 rounded-lg bg-slate-50">
+                                                    {category.name}
                                                 </span>
                                             )}
-                                            <span className={`text-5xl font-black ${hasDiscount ? 'text-amber-500' : 'text-slate-900'}`}>
-                                                {displayPrice.toFixed(0)}
-                                                <span className="text-xl ml-1 text-slate-400 font-bold">₺</span>
-                                            </span>
                                         </div>
                                     </div>
-                                    <div className="flex justify-between items-center pr-2">
-                                        <span className="text-sm text-slate-400 italic font-bold">
-                                            {product.description || 'Hatay mutfağının seçkin lezzeti, taze malzemelerle.'}
-                                        </span>
-                                        {category && (
-                                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300 border border-slate-100 px-2 py-0.5 rounded-lg bg-slate-50">
-                                                {category.name}
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        <div className="h-full flex flex-col items-center justify-center text-slate-200 gap-4 opacity-50">
+                            <LayoutDashboard size={48} className="animate-pulse" />
+                            <p className="font-black uppercase tracking-widest text-xs">Menü yükleniyor...</p>
+                        </div>
+                    )}
                 </div>
 
                 {/* Progress Bar & Page Indicator */}

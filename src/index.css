@@ -94,6 +94,19 @@ body {
   will-change: transform, box-shadow;
 }
 
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 12s linear infinite;
+}
+
 /* Scrollbar styles for admin panel */
 ::-webkit-scrollbar {
   width: 8px;
