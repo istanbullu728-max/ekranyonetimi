@@ -7,6 +7,7 @@ import ShowcaseManager from '../components/admin/ShowcaseManager';
 import TVPreviewModal from '../components/admin/TVPreviewModal';
 import { LayoutDashboard, Megaphone, Settings, Plus, Monitor, X, Menu, Image as ImageIcon, FolderPlus } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
+import AdminSync from '../components/sync/AdminSync';
 
 export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState('products');
@@ -212,6 +213,8 @@ export default function AdminDashboard() {
                     </div>
                 </div>
             )}
+            
+            <AdminSync />
 
         </div>
     );
