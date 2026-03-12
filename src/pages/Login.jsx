@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogIn, KeyRound, User } from 'lucide-react';
+import { LogIn, KeyRound, User, Lock } from 'lucide-react';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -97,6 +97,3 @@ export default function Login() {
         </div>
     );
 }
-
-// Simple Lock icon replacement since I missed importing it initially if I use lucide
-import { Lock } from 'lucide-react';
