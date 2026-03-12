@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import useStore from '../store/useStore';
 import { Sparkles, Flame, Settings, Maximize2, LayoutDashboard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import DisplaySync from '../components/sync/DisplaySync';
 
 const ITEMS_PER_PAGE = 10;
 const SLIDE_DURATION = 8000; // 8 seconds
@@ -261,8 +260,6 @@ export default function CustomerDisplay() {
                     <Maximize2 size={16} />
                 </button>
             </div>
-            
-            <DisplaySync />
         </div>
     );
 }

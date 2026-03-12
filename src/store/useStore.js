@@ -16,10 +16,6 @@ const useStore = create(
             setIsTextCurved: (val) => set((state) => ({
                 settings: { ...state.settings, isTextCurved: val }
             })),
-            tvPairCode: null,
-            adminPairCode: null,
-            setTvPairCode: (code) => set({ tvPairCode: code }),
-            setAdminPairCode: (code) => set({ adminPairCode: code }),
             showcaseImages: [
                 { id: 1, url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80', active: true },
                 { id: 2, url: 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=800&q=80', active: true },
@@ -74,20 +70,7 @@ const useStore = create(
             })),
 
             hasHydrated: false,
-            setHasHydrated: (val) => set({ hasHydrated: val }),
-
-            // Synchronize state across tabs (Customer Display <-> Admin)
-            syncState: (data) => {
-                if (!data) return;
-                set((state) => ({
-                    ...state,
-                    categories: data.categories || state.categories,
-                    products: data.products || state.products,
-                    campaigns: data.campaigns || state.campaigns,
-                    showcaseImages: data.showcaseImages || state.showcaseImages,
-                    settings: data.settings || state.settings
-                }));
-            },
+            setHasHydrated: (val) => set({ hasHydrated: val })
         }),
         {
             name: 'doner-signage-storage',
